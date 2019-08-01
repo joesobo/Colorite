@@ -1,4 +1,5 @@
-import 'package:colorite/screens/drawer.dart';
+import 'package:colorite/components/drawer.dart';
+import 'package:colorite/components/selector_card.dart';
 import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -35,9 +36,17 @@ class HomePage extends StatelessWidget {
                     height: 40,
                     right: 32,
                     top: 32,
+                    //color editing button
                     child: IconButton(
                       icon: Icon(Icons.edit),
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context){
+                            return SelectorCard();
+                          }
+                        );
+                      },
                     ),
                   ),
                 ],
