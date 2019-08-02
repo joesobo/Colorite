@@ -6,32 +6,28 @@ enum Mode { rgb, hsv }
 Mode mode = Mode.rgb;
 
 class SelectorCard extends StatefulWidget {
-  final Color displayColor = Colors.lightBlueAccent;
   final int r = 125;
   final int g = 125;
   final int b = 125;
 
   @override
-  _SelectorCardState createState() =>
-      _SelectorCardState(displayColor: displayColor, r: r, g: g, b: b);
+  _SelectorCardState createState() => _SelectorCardState(r: r, g: g, b: b);
 }
 
 class _SelectorCardState extends State<SelectorCard> {
-  Color displayColor;
   int r;
   int g;
   int b;
 
-  _SelectorCardState({this.displayColor, this.r, this.g, this.b});
+  _SelectorCardState({this.r, this.g, this.b});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.all(Radius.circular(20.0))
-),
+          borderRadius: BorderRadius.all(Radius.circular(20.0))),
       title: Text(
-        'Edit your main color',
+        'Edit your main color\n $r, $g, $b',
         textAlign: TextAlign.center,
       ),
       content: Column(
@@ -40,132 +36,15 @@ class _SelectorCardState extends State<SelectorCard> {
         children: <Widget>[
           Column(
             children: <Widget>[
-              ColorIndicator(color: displayColor),
+              ColorIndicator(color: Color.fromRGBO(r, g, b, 1)),
               ModeSelector(),
             ],
           ),
           Column(
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.0),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text('Red'),
-                        Text(r.toString()),
-                      ],
-                    ),
-                    SliderTheme(
-                      data: SliderTheme.of(context).copyWith(
-                        thumbShape:
-                            RoundSliderThumbShape(enabledThumbRadius: 10),
-                        overlayShape:
-                            RoundSliderOverlayShape(overlayRadius: 20),
-                        thumbColor: Colors.white,
-                        activeTrackColor: Colors.red,
-                        overlayColor: Color(0x5fe57373),
-                      ),
-                      child: Slider(
-                        min: 0,
-                        max: 255,
-                        value: r.toDouble(),
-                        onChanged: (double newValue) {
-                          setState(() {
-                            r = newValue.round();
-                          });
-                        },
-                      ),
-                    ),
-                    Container(
-                      height: 1,
-                      width: 225,
-                      color: Colors.grey,
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.0),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text('Green'),
-                        Text(g.toString()),
-                      ],
-                    ),
-                    SliderTheme(
-                      data: SliderTheme.of(context).copyWith(
-                        thumbShape:
-                            RoundSliderThumbShape(enabledThumbRadius: 10),
-                        overlayShape:
-                            RoundSliderOverlayShape(overlayRadius: 20),
-                        thumbColor: Colors.white,
-                        activeTrackColor: Colors.green,
-                        overlayColor: Color(0x5f81c784),
-                      ),
-                      child: Slider(
-                        min: 0,
-                        max: 255,
-                        value: g.toDouble(),
-                        onChanged: (double newValue) {
-                          setState(() {
-                            g = newValue.round();
-                          });
-                        },
-                      ),
-                    ),
-                    Container(
-                      height: 1,
-                      width: 225,
-                      color: Colors.grey,
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.0),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text('Blue'),
-                        Text(b.toString()),
-                      ],
-                    ),
-                    SliderTheme(
-                      data: SliderTheme.of(context).copyWith(
-                        thumbShape:
-                            RoundSliderThumbShape(enabledThumbRadius: 10),
-                        overlayShape:
-                            RoundSliderOverlayShape(overlayRadius: 20),
-                        thumbColor: Colors.white,
-                        activeTrackColor: Colors.blue,
-                        overlayColor: Color(0x5f03A9f4),
-                      ),
-                      child: Slider(
-                        min: 0,
-                        max: 255,
-                        value: b.toDouble(),
-                        onChanged: (double newValue) {
-                          setState(() {
-                            b = newValue.round();
-                          });
-                        },
-                      ),
-                    ),
-                    Container(
-                      height: 1,
-                      width: 225,
-                      color: Colors.grey,
-                    ),
-                  ],
-                ),
-              ),
+              ColorSlider(parent: this, text: 'Red', value: r, activeColor: Colors.red, overlayColor: Color(0x5fe57373),),
+              ColorSlider(parent: this, text: 'Green', value: g, activeColor: Colors.green, overlayColor: Color(0x5f81c784),),
+              ColorSlider(parent: this, text: 'Blue', value: b, activeColor: Colors.blue, overlayColor: Color(0x5f03A9f4),),
             ],
           ),
           RaisedButton(
@@ -276,6 +155,65 @@ class _ModeSelectorState extends State<ModeSelector> {
           topRight: mode == Mode.hsv ? Radius.circular(5) : Radius.zero,
           bottomRight: mode == Mode.hsv ? Radius.circular(5) : Radius.zero,
         ),
+      ),
+    );
+  }
+}
+
+class ColorSlider extends StatelessWidget {
+  final _SelectorCardState parent;
+  final String text;
+  final int value;
+  final Color activeColor;
+  final Color overlayColor;
+
+  ColorSlider({this.parent, this.text, this.value, this.activeColor, this.overlayColor});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(text),
+              Text(value.toString()),
+            ],
+          ),
+          SliderTheme(
+            data: SliderTheme.of(context).copyWith(
+              thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10),
+              overlayShape: RoundSliderOverlayShape(overlayRadius: 20),
+              thumbColor: Colors.white,
+              activeTrackColor: activeColor,
+              overlayColor: overlayColor,
+            ),
+            child: Slider(
+              min: 0,
+              max: 255,
+              value: value.toDouble(),
+              onChanged: (double newValue) {
+                parent.setState(() {
+                  if(text == 'Red'){
+                    parent.r = newValue.round();
+                  }
+                  else if(text == 'Blue'){
+                    parent.b = newValue.round();
+                  }else{
+                    parent.g = newValue.round();
+                  }
+                });
+              },
+            ),
+          ),
+          Container(
+            height: 1,
+            width: 225,
+            color: Colors.grey,
+          ),
+        ],
       ),
     );
   }
