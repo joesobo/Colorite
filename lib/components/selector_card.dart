@@ -6,6 +6,9 @@ enum Mode { rgb, hsv }
 Mode mode = Mode.rgb;
 
 class SelectorCard extends StatefulWidget {
+
+  SelectorCard({@required this.mainColor});
+
   final int r = 125;
   final int g = 125;
   final int b = 125;
@@ -13,7 +16,7 @@ class SelectorCard extends StatefulWidget {
   final int s = 50;
   final int v = 50;
 
-  final Color mainColor = Colors.white;
+  final Color mainColor;
 
   @override
   _SelectorCardState createState() => _SelectorCardState(
@@ -85,7 +88,7 @@ class _SelectorCardState extends State<SelectorCard> {
               style: defaultText,
             ),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(context, mainColor);
             },
           ),
         ],

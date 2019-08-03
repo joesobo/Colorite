@@ -3,7 +3,18 @@ import 'package:colorite/components/selector_card.dart';
 import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  final Color mainColor = Color.fromRGBO(125, 125, 125, 1);
+
+  @override
+  _HomePageState createState() => _HomePageState(mainColor: mainColor);
+}
+
+class _HomePageState extends State<HomePage> {
+  Color mainColor;
+
+  _HomePageState({this.mainColor});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +39,7 @@ class HomePage extends StatelessWidget {
                         topLeft: Radius.circular(5),
                         topRight: Radius.circular(5),
                       ),
-                      color: Colors.lightBlueAccent,
+                      color: mainColor,
                     ),
                   ),
                   Positioned(
@@ -39,13 +50,19 @@ class HomePage extends StatelessWidget {
                     //color editing button
                     child: IconButton(
                       icon: Icon(Icons.edit),
-                      onPressed: () {
-                        showDialog(
+                      onPressed: () async {
+                        final resultColor = await showDialog(
                           context: context,
-                          builder: (BuildContext context){
-                            return SelectorCard();
-                          }
+                          builder: (BuildContext context) {
+                            return SelectorCard(mainColor: mainColor);
+                          },
                         );
+
+                        if (resultColor != null) {
+                          setState(() {
+                            mainColor = resultColor;
+                          });
+                        }
                       },
                     ),
                   ),
