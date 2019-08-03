@@ -39,7 +39,10 @@ class _SelectorCardState extends State<SelectorCard> {
 
   @override
   void initState() {
-    mainColor = Color.fromRGBO(r, g, b, 1);
+    r = mainColor.red;
+    g = mainColor.green;
+    b = mainColor.blue;
+    mode = Mode.rgb;
     hexText = 'Hex: #${mainColor.value.toRadixString(16).toUpperCase()}';
     super.initState();
   }

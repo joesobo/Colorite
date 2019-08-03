@@ -1,5 +1,6 @@
 import 'package:colorite/components/drawer.dart';
 import 'package:colorite/components/selector_card.dart';
+import 'package:colorite/utilities/color_helper.dart';
 import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,11 @@ class _HomePageState extends State<HomePage> {
   Color mainColor;
 
   _HomePageState({this.mainColor});
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                       bottomLeft: Radius.circular(5),
                       bottomRight: Radius.circular(5),
                     ),
-                    color: Colors.blue,
+                    color: ColorHelper().getDarkShade(mainColor),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -88,39 +94,89 @@ class _HomePageState extends State<HomePage> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             child: Text(
-                              'HEX',
+                              'HEX:',
                               style: smallText,
                             ),
                           ),
-                          specialText('0xFFFFFFFF'),
+                          specialText('0x' +
+                              mainColor.value.toRadixString(16).toUpperCase()),
                         ],
                       ),
-                      //rgb
+                      //rgb and hsv
                       Row(
                         children: <Widget>[
+                          //rgb
                           Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             child: Text(
-                              'RGB',
+                              'RGB:',
                               style: smallText,
                             ),
                           ),
-                          specialText('255'),
-                          specialText('200'),
-                          specialText('176'),
+                          specialText(mainColor.red.toString()),
+                          specialText(mainColor.green.toString()),
+                          specialText(mainColor.blue.toString()),
+                          //hsv
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 32.0, right: 8.0),
+                            child: Text(
+                              'HSV:',
+                              style: smallText,
+                            ),
+                          ),
+                          specialText(HSVColor.fromColor(mainColor).hue.toStringAsFixed(0)),
+                          specialText((HSVColor.fromColor(mainColor).saturation * 100).toStringAsFixed(0)),
+                          specialText((HSVColor.fromColor(mainColor).value * 100).toStringAsFixed(0)),
                         ],
                       ),
                     ],
                   )),
             ],
           ),
-          colorRow('Shade colors'),
-          colorRow('Tint colors'),
-          colorRow('Triadic colors'),
-          colorRow('Analogous colors'),
-          colorRow('Complimentary colors'),
-          colorRow('Related colors'),
+          colorListRow(
+            'Shade colors',
+            getColorContainer(
+              ColorHelper().getShades(mainColor),
+            ),
+          ),
+          colorListRow(
+            'Tint colors',
+            getColorContainer(
+              ColorHelper().getTint(mainColor),
+            ),
+          ),
+          colorListRow(
+            'Triadic colors',
+            getColorContainer(
+              ColorHelper().getTriadic(mainColor),
+            ),
+          ),
+          colorListRow(
+            'Analogous colors',
+            getColorContainer(
+              ColorHelper().getAnalogous(mainColor),
+            ),
+          ),
+          colorListRow(
+            'Complimentary colors',
+            getColorContainer(
+              ColorHelper().getComplementary(mainColor),
+            ),
+          ),
+          colorListRow(
+            'Split Complimentary colors',
+            getColorContainer(
+              ColorHelper().getSplitComplement(mainColor),
+            ),
+          ),
+          colorListRow(
+            'Monochromatic colors',
+            getColorContainer(
+              ColorHelper().getMonochromatic(mainColor),
+            ),
+          ),
         ],
       ),
     );
@@ -145,9 +201,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget colorRow(String text) {
-    double height = 32;
-
+  Widget colorListRow(String text, List<Widget> widgetList) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 12),
       child: Column(
@@ -156,55 +210,63 @@ class _HomePageState extends State<HomePage> {
           Text(text),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    height: height,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(5),
-                        bottomLeft: Radius.circular(5),
-                      ),
-                      color: Colors.lightBlueAccent,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    height: height,
-                    color: Colors.lightBlue,
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    height: height,
-                    color: Colors.blueAccent,
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    height: height,
-                    color: Colors.blue,
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    height: height,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(5),
-                        bottomRight: Radius.circular(5),
-                      ),
-                      color: Colors.blueGrey,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            child: Row(children: widgetList),
           ),
         ],
       ),
     );
+  }
+
+  List<Expanded> getColorContainer(List<Color> colorList) {
+    double height = 32;
+    List<Expanded> widgetList = [];
+    int count = 0;
+
+    for (Color color in colorList) {
+      //first color
+      if (colorList[0] == color && count == 0) {
+        widgetList.add(
+          Expanded(
+            child: Container(
+              height: height,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(5),
+                  bottomLeft: Radius.circular(5),
+                ),
+                color: color,
+              ),
+            ),
+          ),
+        );
+      }
+      //last color
+      else if (colorList[colorList.length - 1] == color && count == colorList.length - 1) {
+        widgetList.add(Expanded(
+          child: Container(
+            height: height,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(5),
+                bottomRight: Radius.circular(5),
+              ),
+              color: color,
+            ),
+          ),
+        ));
+        // other colors
+      } else {
+        widgetList.add(
+          Expanded(
+            child: Container(
+              height: height,
+              color: color,
+            ),
+          ),
+        );
+      }
+      count++;
+    }
+    return widgetList;
   }
 }
