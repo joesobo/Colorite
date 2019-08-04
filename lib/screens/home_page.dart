@@ -99,7 +99,10 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           specialText('#' +
-                              mainColor.value.toRadixString(16).substring(2).toUpperCase()),
+                              mainColor.value
+                                  .toRadixString(16)
+                                  .substring(2)
+                                  .toUpperCase()),
                         ],
                       ),
                       //rgb and hsv
@@ -126,9 +129,15 @@ class _HomePageState extends State<HomePage> {
                               style: smallText,
                             ),
                           ),
-                          specialText(HSVColor.fromColor(mainColor).hue.toStringAsFixed(0)),
-                          specialText((HSVColor.fromColor(mainColor).saturation * 100).toStringAsFixed(0)),
-                          specialText((HSVColor.fromColor(mainColor).value * 100).toStringAsFixed(0)),
+                          specialText(HSVColor.fromColor(mainColor)
+                              .hue
+                              .toStringAsFixed(0)),
+                          specialText(
+                              (HSVColor.fromColor(mainColor).saturation * 100)
+                                  .toStringAsFixed(0)),
+                          specialText(
+                              (HSVColor.fromColor(mainColor).value * 100)
+                                  .toStringAsFixed(0)),
                         ],
                       ),
                     ],
@@ -227,40 +236,61 @@ class _HomePageState extends State<HomePage> {
       if (colorList[0] == color && count == 0) {
         widgetList.add(
           Expanded(
-            child: Container(
-              height: height,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(5),
-                  bottomLeft: Radius.circular(5),
+            child: FlatButton(
+              onPressed: () {
+                print(color);
+              },
+              padding: EdgeInsets.all(0),
+              child: Container(
+                height: height,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(5),
+                    bottomLeft: Radius.circular(5),
+                  ),
+                  color: color,
                 ),
-                color: color,
               ),
             ),
           ),
         );
       }
       //last color
-      else if (colorList[colorList.length - 1] == color && count == colorList.length - 1) {
-        widgetList.add(Expanded(
-          child: Container(
-            height: height,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(5),
-                bottomRight: Radius.circular(5),
+      else if (colorList[colorList.length - 1] == color &&
+          count == colorList.length - 1) {
+        widgetList.add(
+          Expanded(
+            child: FlatButton(
+              onPressed: () {
+                print(color);
+              },
+              padding: EdgeInsets.all(0),
+              child: Container(
+                height: height,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(5),
+                    bottomRight: Radius.circular(5),
+                  ),
+                  color: color,
+                ),
               ),
-              color: color,
             ),
           ),
-        ));
+        );
         // other colors
       } else {
         widgetList.add(
           Expanded(
-            child: Container(
-              height: height,
-              color: color,
+            child: FlatButton(
+              onPressed: () {
+                print(color);
+              },
+              padding: EdgeInsets.all(0),
+              child: Container(
+                height: height,
+                color: color,
+              ),
             ),
           ),
         );
