@@ -11,21 +11,53 @@ class ColorHelper {
 
   //returns mainColor and complement in a list
   List<Color> getComplementary(Color mainColor) {
-    //main color
     List<Color> result = [];
     HSVColor color = getHSVColor(mainColor);
+
+    //color 1
+    HSVColor newColor = HSVColor.fromAHSV(
+        1,
+        color.hue,
+        color.saturation <= 0.9
+            ? (color.saturation + .1).abs()
+            : (color.saturation - .1).abs(),
+        1);
+    result.add(newColor.toColor());
+
+    //color 2
+    newColor = HSVColor.fromAHSV(
+        1,
+        color.hue,
+        color.saturation >= 0.12
+            ? (color.saturation - .12).abs()
+            : (color.saturation + .12).abs(),
+        1);
+    result.add(newColor.toColor());
+
+    //main color
+    color = getHSVColor(mainColor);
     result.add(mainColor);
 
-    //2nd color
+    //color 3
     double newHue = ((color.hue + 180) - 360).abs();
-    HSVColor newColor =
+    newColor = HSVColor.fromAHSV(
+        1,
+        newHue,
+        color.saturation <= 0.80
+            ? (color.saturation + .20).abs()
+            : (color.saturation - .20).abs(),
+        1);
+    result.add(newColor.toColor());
+
+    //color 4
+    newColor =
         HSVColor.fromAHSV(1, newHue, color.saturation, color.value);
     result.add(newColor.toColor());
 
     return result;
   }
 
-  //returns mainColor and 2 complements in a list
+  //returns mainColor and 4 complements from 2 parts in a list
   List<Color> getSplitComplement(Color mainColor) {
     List<Color> result = [];
     HSVColor color = getHSVColor(mainColor);
@@ -36,18 +68,35 @@ class ColorHelper {
         HSVColor.fromAHSV(1, newHue, color.saturation, color.value);
     result.add(newColor.toColor());
 
+    //color 2
+    double newValue;
+    color.value <= .70 ?
+    newValue = color.value + .3 : 
+    newValue = color.value - .3;
+    newColor =
+        HSVColor.fromAHSV(1, newHue, color.saturation, newValue);
+    result.add(newColor.toColor());
+
     //main color
     result.add(mainColor);
 
-    //color 2
+    //color 3
     newHue = ((color.hue + 210) - 360).abs();
     newColor = HSVColor.fromAHSV(1, newHue, color.saturation, color.value);
+    result.add(newColor.toColor());
+
+    //color 4
+    color.value <= .70 ?
+    newValue = color.value + .3 : 
+    newValue = color.value - .3;
+    newColor =
+        HSVColor.fromAHSV(1, newHue, color.saturation, newValue);
     result.add(newColor.toColor());
 
     return result;
   }
 
-  //returns mainColor and 3 complements in a list
+  //returns mainColor and 4 complements in a list
   List<Color> getTriadic(Color mainColor) {
     List<Color> result = [];
     HSVColor color = getHSVColor(mainColor);
@@ -67,6 +116,15 @@ class ColorHelper {
     result.add(mainColor);
 
     //color 3
+    double newValue;
+    color.value <= .70 ?
+    newValue = color.value + .3 : 
+    newValue = color.value - .3;
+    newColor =
+        HSVColor.fromAHSV(1, color.hue, color.saturation, newValue);
+    result.add(newColor.toColor());
+
+    //color 4
     newHue = ((color.hue + 270) - 360).abs();
     newColor = HSVColor.fromAHSV(1, newHue, color.saturation, color.value);
     result.add(newColor.toColor());
@@ -74,7 +132,7 @@ class ColorHelper {
     return result;
   }
 
-  //returns mainColor and 3 analogous in a list
+  //returns mainColor and 4 analogous in a list
   List<Color> getAnalogous(Color mainColor) {
     List<Color> result = [];
     HSVColor color = getHSVColor(mainColor);
@@ -94,7 +152,12 @@ class ColorHelper {
     result.add(mainColor);
 
     //color 3
-    newHue = ((color.hue + 90) - 360).abs();
+    newHue = ((color.hue - 30) - 360).abs();
+    newColor = HSVColor.fromAHSV(1, newHue, color.saturation, color.value);
+    result.add(newColor.toColor());
+
+    //color 4
+    newHue = ((color.hue - 60) - 360).abs();
     newColor = HSVColor.fromAHSV(1, newHue, color.saturation, color.value);
     result.add(newColor.toColor());
 
