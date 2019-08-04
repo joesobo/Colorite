@@ -1,12 +1,12 @@
 import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 enum Mode { rgb, hsv }
 
 Mode mode = Mode.rgb;
 
 class SelectorCard extends StatefulWidget {
-
   SelectorCard({@required this.mainColor});
 
   final int r = 125;
@@ -32,7 +32,7 @@ class _SelectorCardState extends State<SelectorCard> {
   int v;
   Color mainColor;
 
-  String hexText = '';
+  TextEditingController hexController = TextEditingController();
 
   _SelectorCardState(
       {this.r, this.g, this.b, this.h, this.s, this.v, this.mainColor});
@@ -43,7 +43,8 @@ class _SelectorCardState extends State<SelectorCard> {
     g = mainColor.green;
     b = mainColor.blue;
     mode = Mode.rgb;
-    hexText = 'Hex: #${mainColor.value.toRadixString(16).toUpperCase()}';
+    hexController.text =
+        '${mainColor.value.toRadixString(16).substring(2).toUpperCase()}';
     super.initState();
   }
 
@@ -64,7 +65,53 @@ class _SelectorCardState extends State<SelectorCard> {
           Column(
             children: <Widget>[
               //hex text
-              Text(hexText, style: TextStyle(color: Colors.grey)),
+              Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: Text('#'),
+                  ),
+                  Expanded(
+                    child: TextField(
+                      controller: hexController,
+                      textCapitalization: TextCapitalization.characters,
+                      decoration: InputDecoration(
+                        labelText: 'Hex:',
+                        labelStyle: TextStyle(
+                          color: Colors.blueGrey[200],
+                        ),
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                      ),
+                      style: TextStyle(),
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(6),
+                      ],
+                      onChanged: (value) {
+                        if (hexController.text.length == 6) {
+                          String hexText = 'FF' + hexController.text;
+                          int hexInt = int.parse(hexText, radix: 16);
+                          mainColor = Color(hexInt);
+                          setState(() {
+                            if (mode == Mode.rgb) {
+                              r = mainColor.red;
+                              g = mainColor.green;
+                              b = mainColor.blue;
+                            } else {
+                              h = HSVColor.fromColor(mainColor).hue.toInt();
+                              s = (HSVColor.fromColor(mainColor).saturation *
+                                      100)
+                                  .toInt();
+                              v = (HSVColor.fromColor(mainColor).value * 100)
+                                  .toInt();
+                            }
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
               //color indicator
               mode == Mode.rgb
                   ? ColorIndicator(color: Color.fromRGBO(r, g, b, 1))
@@ -307,8 +354,8 @@ class ColorSlider extends StatelessWidget {
               onChanged: (double newValue) {
                 parent.setState(() {
                   if (text == 'Red' || text == 'Blue' || text == 'Green') {
-                    parent.hexText =
-                        'Hex: #${Color.fromRGBO(parent.r, parent.g, parent.b, 1).value.toRadixString(16).toUpperCase()}';
+                    parent.hexController.text =
+                        '${Color.fromRGBO(parent.r, parent.g, parent.b, 1).value.toRadixString(16).substring(2).toUpperCase()}';
                     parent.mainColor =
                         Color.fromRGBO(parent.r, parent.g, parent.b, 1);
 
@@ -322,8 +369,8 @@ class ColorSlider extends StatelessWidget {
                   } else if (text == 'Hue' ||
                       text == 'Saturation' ||
                       text == 'Value') {
-                    parent.hexText =
-                        'Hex: #${HSVColor.fromAHSV(1, parent.h.toDouble(), parent.s / 100, parent.v / 100).toColor().value.toRadixString(16).toUpperCase()}';
+                    parent.hexController.text =
+                        '${HSVColor.fromAHSV(1, parent.h.toDouble(), parent.s / 100, parent.v / 100).toColor().value.toRadixString(16).substring(2).toUpperCase()}';
                     parent.mainColor = HSVColor.fromAHSV(1, parent.h.toDouble(),
                             parent.s / 100, parent.v / 100)
                         .toColor();

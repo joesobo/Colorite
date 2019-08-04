@@ -98,8 +98,8 @@ class _HomePageState extends State<HomePage> {
                               style: smallText,
                             ),
                           ),
-                          specialText('0x' +
-                              mainColor.value.toRadixString(16).toUpperCase()),
+                          specialText('#' +
+                              mainColor.value.toRadixString(16).substring(2).toUpperCase()),
                         ],
                       ),
                       //rgb and hsv
