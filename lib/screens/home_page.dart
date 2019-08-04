@@ -216,7 +216,23 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Text(text),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(text),
+              Container(
+                height: 24,
+                width: 24,
+                child: IconButton(
+                  padding: EdgeInsets.all(0),
+                  onPressed: () {
+                    print('info');
+                  },
+                  icon: Icon(Icons.info_outline),
+                ),
+              )
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Row(children: widgetList),
