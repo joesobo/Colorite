@@ -153,11 +153,17 @@ class ColorHelper {
 
     //color 3
     newHue = ((color.hue - 30) - 360).abs();
+    if(newHue >= 360){
+      newHue = 360;
+    }
     newColor = HSVColor.fromAHSV(1, newHue, color.saturation, color.value);
     result.add(newColor.toColor());
 
     //color 4
     newHue = ((color.hue - 60) - 360).abs();
+    if(newHue >= 360){
+      newHue = 360;
+    }
     newColor = HSVColor.fromAHSV(1, newHue, color.saturation, color.value);
     result.add(newColor.toColor());
 

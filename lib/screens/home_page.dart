@@ -1,3 +1,4 @@
+import 'package:colorite/components/color_info.dart';
 import 'package:colorite/components/drawer.dart';
 import 'package:colorite/components/selector_card.dart';
 import 'package:colorite/utilities/color_helper.dart';
@@ -149,48 +150,56 @@ class _HomePageState extends State<HomePage> {
             getColorContainer(
               ColorHelper().getShades(mainColor),
             ),
+            'A group of colors that have the same hue but different value',
           ),
           colorListRow(
             'Tint colors',
             getColorContainer(
               ColorHelper().getTint(mainColor),
             ),
+            'A group of colors that have the same hue but different saturation',
           ),
           colorListRow(
             'Triadic colors',
             getColorContainer(
               ColorHelper().getTriadic(mainColor),
             ),
+            'A group of colors that are evenly spaced around the color wheel',
           ),
           colorListRow(
             'Analogous colors',
             getColorContainer(
               ColorHelper().getAnalogous(mainColor),
             ),
+            'A group of colors that are next to each other on the color wheel',
           ),
           colorListRow(
             'Complimentary colors',
             getColorContainer(
               ColorHelper().getComplementary(mainColor),
             ),
+            'A group of colors that are opposite each other on the color wheel',
           ),
           colorListRow(
             'Split Complimentary colors',
             getColorContainer(
               ColorHelper().getSplitComplement(mainColor),
             ),
+            'A group of colors that are split 3 ways around the color wheel',
           ),
           colorListRow(
             'Monochromatic colors',
             getColorContainer(
               ColorHelper().getMonochromatic(mainColor),
             ),
+            'A group of colors that have the same hue but different value and saturation',
           ),
         ],
       ),
     );
   }
 
+  //text wrapped in special border
   Widget specialText(String text) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 4),
@@ -210,7 +219,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget colorListRow(String text, List<Widget> widgetList) {
+  //creates row of color buttons
+  Widget colorListRow(String text, List<Widget> widgetList, String toolTip) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 12),
       child: Column(
@@ -219,16 +229,23 @@ class _HomePageState extends State<HomePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(text),
+              Tooltip(
+                message: toolTip,
+                child: Text(text),
+              ),
               Container(
-                height: 24,
-                width: 24,
+                height: 20,
+                width: 20,
                 child: IconButton(
                   padding: EdgeInsets.all(0),
                   onPressed: () {
-                    print('info');
+                    //TODO: add to palette
+                    print('Colors added to palette');
                   },
-                  icon: Icon(Icons.info_outline),
+                  icon: Icon(
+                    Icons.add_circle_outline,
+                    size: 20,
+                  ),
                 ),
               )
             ],
@@ -242,6 +259,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  //button based on color
   List<Expanded> getColorContainer(List<Color> colorList) {
     double height = 32;
     List<Expanded> widgetList = [];
@@ -254,7 +272,12 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: FlatButton(
               onPressed: () {
-                print(color);
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ColorInfo(color: color);
+                  },
+                );
               },
               padding: EdgeInsets.all(0),
               child: Container(
@@ -278,7 +301,12 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: FlatButton(
               onPressed: () {
-                print(color);
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ColorInfo(color: color);
+                  },
+                );
               },
               padding: EdgeInsets.all(0),
               child: Container(
@@ -300,7 +328,12 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: FlatButton(
               onPressed: () {
-                print(color);
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ColorInfo(color: color);
+                  },
+                );
               },
               padding: EdgeInsets.all(0),
               child: Container(

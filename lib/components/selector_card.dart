@@ -1,3 +1,4 @@
+import 'package:colorite/components/color_indicator.dart';
 import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -207,25 +208,6 @@ class _SelectorCardState extends State<SelectorCard> {
           max: 100,
         ),
       ],
-    );
-  }
-}
-
-//display color
-class ColorIndicator extends StatelessWidget {
-  final Color color;
-
-  ColorIndicator({this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 8, bottom: 16),
-      height: 104,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: color,
-      ),
     );
   }
 }
