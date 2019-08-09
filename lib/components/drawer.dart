@@ -1,5 +1,7 @@
+import 'package:colorite/screens/gradient_page.dart';
 import 'package:colorite/screens/home_page.dart';
 import 'package:colorite/screens/palette_page.dart';
+import 'package:colorite/screens/settings_page.dart';
 import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -63,7 +65,14 @@ class SideDrawer extends StatelessWidget {
                     textAlign: TextAlign.start,
                     style: defaultText,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GradientPage(color: color),
+                      ),
+                    );
+                  },
                 ),
                 FlatButton(
                   child: Text(
@@ -71,7 +80,14 @@ class SideDrawer extends StatelessWidget {
                     textAlign: TextAlign.start,
                     style: defaultText,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SettingsPage(color: color),
+                      ),
+                    );
+                  },
                 ),
               ],
             )
