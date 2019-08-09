@@ -1,3 +1,4 @@
+import 'package:colorite/components/color_indicator.dart';
 import 'package:colorite/components/color_info.dart';
 import 'package:colorite/components/drawer.dart';
 import 'package:colorite/components/selector_card.dart';
@@ -222,39 +223,45 @@ class _HomePageState extends State<HomePage> {
   //creates row of color buttons
   Widget colorListRow(String text, List<Widget> widgetList, String toolTip) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Tooltip(
-                message: toolTip,
-                child: Text(text),
-              ),
-              Container(
-                height: 20,
-                width: 20,
-                child: IconButton(
-                  padding: EdgeInsets.all(0),
-                  onPressed: () {
-                    //TODO: add to palette
-                    print('Colors added to palette');
-                  },
-                  icon: Icon(
-                    Icons.add_circle_outline,
-                    size: 20,
-                  ),
+      padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 8),
+      child: Tooltip(
+        message: toolTip,
+              child: Card(
+          elevation: 5,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(text),
+                    Container(
+                      height: 20,
+                      width: 20,
+                      child: IconButton(
+                        padding: EdgeInsets.all(0),
+                        onPressed: () {
+                          //TODO: add to palette
+                          print('Colors added to palette');
+                        },
+                        icon: Icon(
+                          Icons.add_circle_outline,
+                          size: 20,
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-              )
-            ],
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: Row(children: widgetList),
+                ),
+              ],
+            ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4.0),
-            child: Row(children: widgetList),
-          ),
-        ],
+        ),
       ),
     );
   }
