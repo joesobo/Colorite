@@ -1,8 +1,9 @@
+import 'package:colorite/screens/home_page.dart';
+import 'package:colorite/screens/palette_page.dart';
 import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class SideDrawer extends StatelessWidget {
-
   final Color color;
 
   SideDrawer({this.color});
@@ -32,7 +33,14 @@ class SideDrawer extends StatelessWidget {
                     textAlign: TextAlign.start,
                     style: defaultText,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomePage(),
+                      ),
+                    );
+                  },
                 ),
                 FlatButton(
                   child: Text(
@@ -40,7 +48,14 @@ class SideDrawer extends StatelessWidget {
                     textAlign: TextAlign.start,
                     style: defaultText,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PalettePage(color: color),
+                      ),
+                    );
+                  },
                 ),
                 FlatButton(
                   child: Text(

@@ -1,4 +1,3 @@
-import 'package:colorite/components/color_indicator.dart';
 import 'package:colorite/components/color_info.dart';
 import 'package:colorite/components/color_list_card.dart';
 import 'package:colorite/components/drawer.dart';
@@ -8,6 +7,7 @@ import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
+  static String id = 'home_page';
   final Color mainColor = Color.fromRGBO(125, 125, 125, 1);
 
   @override
@@ -18,11 +18,6 @@ class _HomePageState extends State<HomePage> {
   Color mainColor;
 
   _HomePageState({this.mainColor});
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
