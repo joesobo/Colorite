@@ -10,7 +10,7 @@ class PalettePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Colorite'),
+        title: Text('Palettes'),
         backgroundColor: color,
         iconTheme: new IconThemeData(color: Colors.white),
       ),

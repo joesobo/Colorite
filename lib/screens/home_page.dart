@@ -149,49 +149,56 @@ class _HomePageState extends State<HomePage> {
             widgetList: createColorButton(
               ColorHelper().getShades(mainColor),
             ),
-            toolTip: 'A group of colors that have the same hue but different value',
+            toolTip:
+                'A group of colors that have the same hue but different value',
           ),
           ColorListCard(
             text: 'Tint colors',
             widgetList: createColorButton(
               ColorHelper().getTint(mainColor),
             ),
-            toolTip: 'A group of colors that have the same hue but different saturation',
+            toolTip:
+                'A group of colors that have the same hue but different saturation',
           ),
           ColorListCard(
             text: 'Triadic colors',
             widgetList: createColorButton(
               ColorHelper().getTriadic(mainColor),
             ),
-            toolTip: 'A group of colors that are evenly spaced around the color wheel',
+            toolTip:
+                'A group of colors that are evenly spaced around the color wheel',
           ),
           ColorListCard(
             text: 'Analogous colors',
             widgetList: createColorButton(
               ColorHelper().getAnalogous(mainColor),
             ),
-            toolTip: 'A group of colors that are next to each other on the color wheel',
+            toolTip:
+                'A group of colors that are next to each other on the color wheel',
           ),
           ColorListCard(
             text: 'Complimentary colors',
             widgetList: createColorButton(
               ColorHelper().getComplementary(mainColor),
             ),
-            toolTip: 'A group of colors that are opposite each other on the color wheel',
+            toolTip:
+                'A group of colors that are opposite each other on the color wheel',
           ),
           ColorListCard(
             text: 'Split Complimentary colors',
             widgetList: createColorButton(
               ColorHelper().getSplitComplement(mainColor),
             ),
-            toolTip: 'A group of colors that are split 3 ways around the color wheel',
+            toolTip:
+                'A group of colors that are split 3 ways around the color wheel',
           ),
           ColorListCard(
             text: 'Monochromatic colors',
             widgetList: createColorButton(
               ColorHelper().getMonochromatic(mainColor),
             ),
-            toolTip: 'A group of colors that have the same hue but different value and saturation',
+            toolTip:
+                'A group of colors that have the same hue but different value and saturation',
           ),
         ],
       ),
@@ -219,37 +226,21 @@ class _HomePageState extends State<HomePage> {
   }
 
   //button based on color
-  List<Expanded> createColorButton(
-      List<Color> colorList) {
+  List<Widget> createColorButton(List<Color> colorList) {
     double height = 32;
-    List<Expanded> widgetList = [];
+    List<Widget> widgetList = [];
     int count = 0;
 
     for (Color color in colorList) {
       //first color
       if (colorList[0] == color && count == 0) {
         widgetList.add(
-          Expanded(
-            child: FlatButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return ColorInfo(color: color);
-                  },
-                );
-              },
-              padding: EdgeInsets.all(0),
-              child: Container(
-                height: height,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(5),
-                    bottomLeft: Radius.circular(5),
-                  ),
-                  color: color,
-                ),
-              ),
+          radiusButton(
+            color,
+            height,
+            BorderRadius.only(
+              topLeft: Radius.circular(5),
+              bottomLeft: Radius.circular(5),
             ),
           ),
         );
@@ -258,54 +249,51 @@ class _HomePageState extends State<HomePage> {
       else if (colorList[colorList.length - 1] == color &&
           count == colorList.length - 1) {
         widgetList.add(
-          Expanded(
-            child: FlatButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return ColorInfo(color: color);
-                  },
-                );
-              },
-              padding: EdgeInsets.all(0),
-              child: Container(
-                height: height,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(5),
-                    bottomRight: Radius.circular(5),
-                  ),
-                  color: color,
-                ),
-              ),
+          radiusButton(
+            color,
+            height,
+            BorderRadius.only(
+              topRight: Radius.circular(5),
+              bottomRight: Radius.circular(5),
             ),
           ),
         );
         // other colors
       } else {
         widgetList.add(
-          Expanded(
-            child: FlatButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return ColorInfo(color: color);
-                  },
-                );
-              },
-              padding: EdgeInsets.all(0),
-              child: Container(
-                height: height,
-                color: color,
-              ),
-            ),
-          ),
+          radiusButton(color, height, null),
         );
       }
       count++;
     }
     return widgetList;
+  }
+
+  Widget radiusButton(Color color, double height, BorderRadius border) {
+    return Expanded(
+      child: Material(
+        elevation: 3,
+        color: Colors.transparent,
+        shadowColor: Colors.grey[800],
+        child: FlatButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return ColorInfo(color: color);
+              },
+            );
+          },
+          padding: EdgeInsets.all(0),
+          child: Container(
+            height: 40,
+            decoration: BoxDecoration(
+              borderRadius: border,
+              color: color,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
