@@ -10,4 +10,4 @@ const smallText = TextStyle(
   fontSize: 12,
 );
 
-//const accentColor = Color(0xff6599bc);
+const accentColor = Color(0xff6599bc);

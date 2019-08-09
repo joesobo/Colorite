@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 class PalettePage extends StatelessWidget {
   final Color color;
-  static String id = 'palette_page';
 
   PalettePage({this.color});
 

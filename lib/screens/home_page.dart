@@ -7,8 +7,9 @@ import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  static String id = 'home_page';
-  final Color mainColor = Color.fromRGBO(125, 125, 125, 1);
+  final Color mainColor;
+
+  HomePage({this.mainColor});
 
   @override
   _HomePageState createState() => _HomePageState(mainColor: mainColor);
