@@ -2,6 +2,11 @@ import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class SideDrawer extends StatelessWidget {
+
+  final Color color;
+
+  SideDrawer({this.color});
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -15,6 +20,7 @@ class SideDrawer extends StatelessWidget {
               child: Icon(
                 Icons.colorize,
                 size: 64,
+                color: color,
               ),
             ),
             Column(

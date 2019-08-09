@@ -28,10 +28,10 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Colorite'),
-        backgroundColor: Colors.blueGrey,
-        iconTheme: new IconThemeData(color: Colors.black),
+        backgroundColor: mainColor,
+        iconTheme: new IconThemeData(color: Colors.white),
       ),
-      drawer: SideDrawer(),
+      drawer: SideDrawer(color: mainColor),
       body: ListView(
         children: <Widget>[
           //color viewer
