@@ -225,9 +225,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  //button based on color
+  //decides which button based on order
   List<Widget> createColorButton(List<Color> colorList) {
-    double height = 32;
     List<Widget> widgetList = [];
     int count = 0;
 
@@ -237,7 +236,6 @@ class _HomePageState extends State<HomePage> {
         widgetList.add(
           radiusButton(
             color,
-            height,
             BorderRadius.only(
               topLeft: Radius.circular(5),
               bottomLeft: Radius.circular(5),
@@ -251,7 +249,6 @@ class _HomePageState extends State<HomePage> {
         widgetList.add(
           radiusButton(
             color,
-            height,
             BorderRadius.only(
               topRight: Radius.circular(5),
               bottomRight: Radius.circular(5),
@@ -261,7 +258,10 @@ class _HomePageState extends State<HomePage> {
         // other colors
       } else {
         widgetList.add(
-          radiusButton(color, height, null),
+          radiusButton(
+            color,
+            null,
+          ),
         );
       }
       count++;
@@ -269,7 +269,8 @@ class _HomePageState extends State<HomePage> {
     return widgetList;
   }
 
-  Widget radiusButton(Color color, double height, BorderRadius border) {
+  //created button with changable radius
+  Widget radiusButton(Color color, BorderRadius border) {
     return Expanded(
       child: Material(
         elevation: 3,
@@ -287,6 +288,7 @@ class _HomePageState extends State<HomePage> {
           padding: EdgeInsets.all(0),
           child: Container(
             height: 40,
+            margin: EdgeInsets.only(bottom: 4),
             decoration: BoxDecoration(
               borderRadius: border,
               color: color,
