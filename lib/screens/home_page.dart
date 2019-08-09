@@ -1,5 +1,6 @@
 import 'package:colorite/components/color_indicator.dart';
 import 'package:colorite/components/color_info.dart';
+import 'package:colorite/components/color_list_card.dart';
 import 'package:colorite/components/drawer.dart';
 import 'package:colorite/components/selector_card.dart';
 import 'package:colorite/utilities/color_helper.dart';
@@ -146,54 +147,55 @@ class _HomePageState extends State<HomePage> {
                   )),
             ],
           ),
-          colorListRow(
-            'Shade colors',
-            getColorContainer(
+          //list of color cards
+          ColorListCard(
+            text: 'Shade colors',
+            widgetList: createColorButton(
               ColorHelper().getShades(mainColor),
             ),
-            'A group of colors that have the same hue but different value',
+            toolTip: 'A group of colors that have the same hue but different value',
           ),
-          colorListRow(
-            'Tint colors',
-            getColorContainer(
+          ColorListCard(
+            text: 'Tint colors',
+            widgetList: createColorButton(
               ColorHelper().getTint(mainColor),
             ),
-            'A group of colors that have the same hue but different saturation',
+            toolTip: 'A group of colors that have the same hue but different saturation',
           ),
-          colorListRow(
-            'Triadic colors',
-            getColorContainer(
+          ColorListCard(
+            text: 'Triadic colors',
+            widgetList: createColorButton(
               ColorHelper().getTriadic(mainColor),
             ),
-            'A group of colors that are evenly spaced around the color wheel',
+            toolTip: 'A group of colors that are evenly spaced around the color wheel',
           ),
-          colorListRow(
-            'Analogous colors',
-            getColorContainer(
+          ColorListCard(
+            text: 'Analogous colors',
+            widgetList: createColorButton(
               ColorHelper().getAnalogous(mainColor),
             ),
-            'A group of colors that are next to each other on the color wheel',
+            toolTip: 'A group of colors that are next to each other on the color wheel',
           ),
-          colorListRow(
-            'Complimentary colors',
-            getColorContainer(
+          ColorListCard(
+            text: 'Complimentary colors',
+            widgetList: createColorButton(
               ColorHelper().getComplementary(mainColor),
             ),
-            'A group of colors that are opposite each other on the color wheel',
+            toolTip: 'A group of colors that are opposite each other on the color wheel',
           ),
-          colorListRow(
-            'Split Complimentary colors',
-            getColorContainer(
+          ColorListCard(
+            text: 'Split Complimentary colors',
+            widgetList: createColorButton(
               ColorHelper().getSplitComplement(mainColor),
             ),
-            'A group of colors that are split 3 ways around the color wheel',
+            toolTip: 'A group of colors that are split 3 ways around the color wheel',
           ),
-          colorListRow(
-            'Monochromatic colors',
-            getColorContainer(
+          ColorListCard(
+            text: 'Monochromatic colors',
+            widgetList: createColorButton(
               ColorHelper().getMonochromatic(mainColor),
             ),
-            'A group of colors that have the same hue but different value and saturation',
+            toolTip: 'A group of colors that have the same hue but different value and saturation',
           ),
         ],
       ),
@@ -220,54 +222,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  //creates row of color buttons
-  Widget colorListRow(String text, List<Widget> widgetList, String toolTip) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 8),
-      child: Tooltip(
-        message: toolTip,
-              child: Card(
-          elevation: 5,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(text),
-                    Container(
-                      height: 20,
-                      width: 20,
-                      child: IconButton(
-                        padding: EdgeInsets.all(0),
-                        onPressed: () {
-                          //TODO: add to palette
-                          print('Colors added to palette');
-                        },
-                        icon: Icon(
-                          Icons.add_circle_outline,
-                          size: 20,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4.0),
-                  child: Row(children: widgetList),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   //button based on color
-  List<Expanded> getColorContainer(List<Color> colorList) {
+  List<Expanded> createColorButton(
+      List<Color> colorList) {
     double height = 32;
     List<Expanded> widgetList = [];
     int count = 0;
