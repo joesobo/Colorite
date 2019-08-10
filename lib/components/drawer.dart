@@ -6,9 +6,11 @@ import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class SideDrawer extends StatelessWidget {
-  final Color color;
+  final Color mainColor;
+  final Color color1;
+  final Color color2;
 
-  SideDrawer({this.color});
+  SideDrawer({this.mainColor, this.color1, this.color2});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class SideDrawer extends StatelessWidget {
               child: Icon(
                 Icons.colorize,
                 size: 64,
-                color: color,
+                color: mainColor,
               ),
             ),
             Column(
@@ -39,7 +41,7 @@ class SideDrawer extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => HomePage(mainColor: color),
+                        builder: (context) => HomePage(mainColor: mainColor),
                       ),
                     );
                   },
@@ -54,7 +56,7 @@ class SideDrawer extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PalettePage(color: color),
+                        builder: (context) => PalettePage(color: mainColor),
                       ),
                     );
                   },
@@ -69,7 +71,7 @@ class SideDrawer extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => GradientPage(color: color),
+                        builder: (context) => GradientPage(color1: color1, color2: color2, mainColor: mainColor),
                       ),
                     );
                   },
@@ -84,7 +86,7 @@ class SideDrawer extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SettingsPage(color: color),
+                        builder: (context) => SettingsPage(color: mainColor),
                       ),
                     );
                   },

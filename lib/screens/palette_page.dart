@@ -14,7 +14,7 @@ class PalettePage extends StatelessWidget {
         backgroundColor: color,
         iconTheme: new IconThemeData(color: Colors.white),
       ),
-      drawer: SideDrawer(color: color),
+      drawer: SideDrawer(mainColor: color),
     );
   }
 }
