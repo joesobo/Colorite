@@ -2,6 +2,7 @@ import 'package:colorite/components/color_info.dart';
 import 'package:colorite/components/color_list_card.dart';
 import 'package:colorite/components/drawer.dart';
 import 'package:colorite/components/selector_card.dart';
+import 'package:colorite/components/special_text.dart';
 import 'package:colorite/utilities/color_helper.dart';
 import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                               style: smallText,
                             ),
                           ),
-                          specialText('#' +
+                          SpecialText(text: '#' +
                               mainColor.value
                                   .toRadixString(16)
                                   .substring(2)
@@ -116,9 +117,9 @@ class _HomePageState extends State<HomePage> {
                               style: smallText,
                             ),
                           ),
-                          specialText(mainColor.red.toString()),
-                          specialText(mainColor.green.toString()),
-                          specialText(mainColor.blue.toString()),
+                          SpecialText(text: mainColor.red.toString()),
+                          SpecialText(text: mainColor.green.toString()),
+                          SpecialText(text: mainColor.blue.toString()),
                           //hsv
                           Padding(
                             padding:
@@ -128,13 +129,13 @@ class _HomePageState extends State<HomePage> {
                               style: smallText,
                             ),
                           ),
-                          specialText(HSVColor.fromColor(mainColor)
+                          SpecialText(text: HSVColor.fromColor(mainColor)
                               .hue
                               .toStringAsFixed(0)),
-                          specialText(
+                          SpecialText(text: 
                               (HSVColor.fromColor(mainColor).saturation * 100)
                                   .toStringAsFixed(0)),
-                          specialText(
+                          SpecialText(text: 
                               (HSVColor.fromColor(mainColor).value * 100)
                                   .toStringAsFixed(0)),
                         ],
@@ -201,26 +202,6 @@ class _HomePageState extends State<HomePage> {
                 'A group of colors that have the same hue but different value and saturation',
           ),
         ],
-      ),
-    );
-  }
-
-  //text wrapped in special border
-  Widget specialText(String text) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 4),
-      padding: EdgeInsets.symmetric(horizontal: 4),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(
-          width: 1,
-          color: Colors.white,
-        ),
-      ),
-      child: Text(
-        text,
-        style: smallText,
       ),
     );
   }
