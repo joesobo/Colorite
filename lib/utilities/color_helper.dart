@@ -283,4 +283,19 @@ class ColorHelper {
         HSVColor.fromAHSV(1, color.hue, color.saturation, newValue);
     return newColor.toColor();
   }
+
+  //returns a slightly lighter shade for display
+  Color getLightShade(Color mainColor) {
+    HSVColor color = getHSVColor(mainColor);
+
+    //color 1
+    double newValue = color.value + 0.15;
+    if(newValue >= 1){
+      newValue = 1.0;
+    }
+    HSVColor newColor =
+        HSVColor.fromAHSV(1, color.hue, color.saturation, newValue);
+    return newColor.toColor();
+  }
+
 }
