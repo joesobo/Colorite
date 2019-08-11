@@ -2,10 +2,10 @@ import 'package:colorite/components/color_indicator.dart';
 import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
-class ColorInfo extends StatelessWidget {
+class ColorInfoPopup extends StatelessWidget {
   final Color color;
 
-  ColorInfo({this.color});
+  ColorInfoPopup({this.color});
 
   @override
   Widget build(BuildContext context) {

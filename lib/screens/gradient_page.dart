@@ -45,9 +45,11 @@ class _GradientPageState extends State<GradientPage> {
       drawer: SideDrawer(mainColor: mainColor, color1: color1, color2: color2),
       body: Column(
         children: <Widget>[
+          //color display
           Container(
             margin: EdgeInsets.fromLTRB(32, 32, 32, 16),
             height: 140,
+            width: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(
                 Radius.circular(5),
@@ -63,8 +65,9 @@ class _GradientPageState extends State<GradientPage> {
               ),
             ),
           ),
-          GradientColorInfo(text: 'Color 1', color: color1, parent: this),
-          GradientColorInfo(text: 'Color 2', color: color2, parent: this),
+          //color info
+          GradientInfoCard(text: 'Color 1', color: color1, parent: this),
+          GradientInfoCard(text: 'Color 2', color: color2, parent: this),
         ],
       ),
     );
@@ -72,12 +75,12 @@ class _GradientPageState extends State<GradientPage> {
 }
 
 //new color info display
-class GradientColorInfo extends StatelessWidget {
+class GradientInfoCard extends StatelessWidget {
   final String text;
   final Color color;
   final _GradientPageState parent;
 
-  GradientColorInfo({this.text, this.color, this.parent});
+  GradientInfoCard({this.text, this.color, this.parent});
 
   @override
   Widget build(BuildContext context) {

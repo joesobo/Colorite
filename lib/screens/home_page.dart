@@ -1,4 +1,5 @@
-import 'package:colorite/components/color_info.dart';
+import 'package:colorite/components/color_indicator.dart';
+import 'package:colorite/components/color_info_popup.dart';
 import 'package:colorite/components/color_list_card.dart';
 import 'package:colorite/components/drawer.dart';
 import 'package:colorite/components/selector_card.dart';
@@ -35,115 +36,22 @@ class _HomePageState extends State<HomePage> {
           //color viewer
           Column(
             children: <Widget>[
-              Stack(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(top: 32, left: 32, right: 32),
-                    height: 104,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(5),
-                        topRight: Radius.circular(5),
-                      ),
-                      color: mainColor,
-                    ),
-                  ),
-                  Positioned(
-                    width: 40,
-                    height: 40,
-                    right: 32,
-                    top: 32,
-                    //color editing button
-                    child: IconButton(
-                      icon: Icon(Icons.edit),
-                      onPressed: () async {
-                        final resultColor = await showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return SelectorCard(mainColor: mainColor);
-                          },
-                        );
-
-                        if (resultColor != null) {
-                          setState(() {
-                            mainColor = resultColor;
-                          });
-                        }
-                      },
-                    ),
-                  ),
-                ],
-              ),
+              //color dislay
               Container(
-                  margin: EdgeInsets.only(bottom: 12, left: 32, right: 32),
-                  height: 40,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(5),
-                      bottomRight: Radius.circular(5),
-                    ),
-                    color: ColorHelper().getDarkShade(mainColor),
+                margin: EdgeInsets.only(top: 32, left: 32, right: 32, bottom: 16),
+                height: 104,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      //hex
-                      Row(
-                        children: <Widget>[
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text(
-                              'HEX:',
-                              style: smallText,
-                            ),
-                          ),
-                          SpecialText(text: '#' +
-                              mainColor.value
-                                  .toRadixString(16)
-                                  .substring(2)
-                                  .toUpperCase()),
-                        ],
-                      ),
-                      //rgb and hsv
-                      Row(
-                        children: <Widget>[
-                          //rgb
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text(
-                              'RGB:',
-                              style: smallText,
-                            ),
-                          ),
-                          SpecialText(text: mainColor.red.toString()),
-                          SpecialText(text: mainColor.green.toString()),
-                          SpecialText(text: mainColor.blue.toString()),
-                          //hsv
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 32.0, right: 8.0),
-                            child: Text(
-                              'HSV:',
-                              style: smallText,
-                            ),
-                          ),
-                          SpecialText(text: HSVColor.fromColor(mainColor)
-                              .hue
-                              .toStringAsFixed(0)),
-                          SpecialText(text: 
-                              (HSVColor.fromColor(mainColor).saturation * 100)
-                                  .toStringAsFixed(0)),
-                          SpecialText(text: 
-                              (HSVColor.fromColor(mainColor).value * 100)
-                                  .toStringAsFixed(0)),
-                        ],
-                      ),
-                    ],
-                  )),
+                  color: mainColor,
+                ),
+              ),
+              //new color info
+              ColorInfoCard(text: 'Hex: ', color: mainColor, parent: this),
             ],
           ),
+
           //list of color cards
           ColorListCard(
             text: 'Shade colors',
@@ -262,7 +170,7 @@ class _HomePageState extends State<HomePage> {
             showDialog(
               context: context,
               builder: (BuildContext context) {
-                return ColorInfo(color: color);
+                return ColorInfoPopup(color: color);
               },
             );
           },
@@ -275,6 +183,148 @@ class _HomePageState extends State<HomePage> {
               color: color,
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+//new color info display
+class ColorInfoCard extends StatelessWidget {
+  final String text;
+  final Color color;
+  final _HomePageState parent;
+
+  ColorInfoCard({this.text, this.color, this.parent});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.symmetric(horizontal: 28.0, vertical: 8),
+      elevation: 5,
+      child: Padding(
+        padding: EdgeInsets.all(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            //hex
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Text(
+                      text,
+                    ),
+                  ),
+                  SpecialText(
+                      text: '#' +
+                          color.value
+                              .toRadixString(16)
+                              .substring(2)
+                              .toUpperCase()),
+                ],
+              ),
+            ),
+            //color display
+            Stack(
+              children: <Widget>[
+                Material(
+                  elevation: 3,
+                  color: Colors.transparent,
+                  shadowColor: Colors.grey[800],
+                  child: Container(
+                    height: 40,
+                    margin: EdgeInsets.only(bottom: 4),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(5),
+                      ),
+                      color: color,
+                    ),
+                  ),
+                ),
+                //edit icon for color 1
+                Positioned(
+                  width: 40,
+                  height: 40,
+                  right: 0,
+                  bottom: 4,
+                  //color editing button
+                  child: IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () async {
+                      final resultColor = await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return SelectorCard(mainColor: color);
+                        },
+                      );
+
+                      if (resultColor != null) {
+                        parent.setState(() {
+                          parent.mainColor = resultColor;
+                        });
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+            //color info
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                //rgb
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Text(
+                          'RGB:',
+                          style: smallText,
+                        ),
+                      ),
+                      SpecialText(text: color.red.toString()),
+                      SpecialText(text: color.green.toString()),
+                      SpecialText(text: color.blue.toString()),
+                    ],
+                  ),
+                ),
+                //spacing
+                SizedBox(
+                  width: 32,
+                ),
+                //hsv
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Text(
+                          'HSV:',
+                          style: smallText,
+                        ),
+                      ),
+                      SpecialText(
+                          text:
+                              HSVColor.fromColor(color).hue.toStringAsFixed(0)),
+                      SpecialText(
+                          text: (HSVColor.fromColor(color).saturation * 100)
+                              .toStringAsFixed(0)),
+                      SpecialText(
+                          text: (HSVColor.fromColor(color).value * 100)
+                              .toStringAsFixed(0)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
