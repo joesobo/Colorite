@@ -34,23 +34,21 @@ class _HomePageState extends State<HomePage> {
       body: ListView(
         children: <Widget>[
           //color viewer
-          Column(
-            children: <Widget>[
-              //color dislay
-              Container(
-                margin: EdgeInsets.only(top: 32, left: 32, right: 32, bottom: 16),
-                height: 104,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(5),
-                  ),
-                  color: mainColor,
-                ),
+          Container(
+            margin: EdgeInsets.fromLTRB(30, 32, 30, 4),
+            height: 104,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(5),
               ),
-              //new color info
-              ColorInfoCard(text: 'Hex: ', color: mainColor, parent: this),
-            ],
+              color: mainColor,
+            ),
           ),
+
+          //new color info
+          ColorInfoCard(text: 'Hex: ', color: mainColor, parent: this),
+
+          SizedBox(height: 8,),
 
           //list of color cards
           ColorListCard(

@@ -47,8 +47,8 @@ class _GradientPageState extends State<GradientPage> {
         children: <Widget>[
           //color display
           Container(
-            margin: EdgeInsets.fromLTRB(32, 32, 32, 16),
-            height: 140,
+            margin: EdgeInsets.fromLTRB(30, 32, 30, 4),
+            height: 104,
             width: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(
@@ -68,6 +68,8 @@ class _GradientPageState extends State<GradientPage> {
           //color info
           GradientInfoCard(text: 'Color 1', color: color1, parent: this),
           GradientInfoCard(text: 'Color 2', color: color2, parent: this),
+        
+          SizedBox(height: 8,),
         ],
       ),
     );
