@@ -14,7 +14,8 @@ class GradientPage extends StatefulWidget {
   GradientPage({this.color1, this.color2, this.mainColor});
 
   @override
-  _GradientPageState createState() => _GradientPageState(color1: color1, color2: color2, mainColor: mainColor);
+  _GradientPageState createState() =>
+      _GradientPageState(color1: color1, color2: color2, mainColor: mainColor);
 }
 
 class _GradientPageState extends State<GradientPage> {
@@ -26,7 +27,7 @@ class _GradientPageState extends State<GradientPage> {
 
   @override
   void initState() {
-    if(color1 == null || color2 == null){
+    if (color1 == null || color2 == null) {
       color1 = Colors.red;
       color2 = Colors.yellow;
     }
@@ -42,237 +43,175 @@ class _GradientPageState extends State<GradientPage> {
         iconTheme: new IconThemeData(color: Colors.white),
       ),
       drawer: SideDrawer(mainColor: mainColor, color1: color1, color2: color2),
-      body:
-          //color viewer
-          Column(
+      body: Column(
         children: <Widget>[
-          Stack(
-            children: <Widget>[
-              //color display
-              Container(
-                margin: EdgeInsets.only(top: 32, left: 32, right: 32),
-                height: 104,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(5),
-                    topRight: Radius.circular(5),
-                  ),
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    stops: [0, 1],
-                    colors: [
-                      color1,
-                      color2,
-                    ],
-                  ),
-                ),
-              ),
-              //edit icon for color 1
-              Positioned(
-                width: 40,
-                height: 40,
-                left: 32,
-                top: 32,
-                //color editing button
-                child: IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () async{
-                    final resultColor = await showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return SelectorCard(mainColor: color1);
-                          },
-                        );
-
-                        if (resultColor != null) {
-                          setState(() {
-                            color1 = resultColor;
-                          });
-                        }
-                  },
-                ),
-              ),
-              //edit icon for color 2
-              Positioned(
-                width: 40,
-                height: 40,
-                right: 32,
-                top: 32,
-                //color editing button
-                child: IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () async{
-                    final resultColor = await showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return SelectorCard(mainColor: color2);
-                          },
-                        );
-
-                        if (resultColor != null) {
-                          setState(() {
-                            color2 = resultColor;
-                          });
-                        }
-                  },
-                ),
-              ),
-            ],
-          ),
-          //color info
           Container(
-              margin: EdgeInsets.only(bottom: 12, left: 32, right: 32),
-              height: 56,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(5),
-                  bottomRight: Radius.circular(5),
-                ),
-                color: ColorHelper().getDarkShade(color1),
+            margin: EdgeInsets.fromLTRB(32, 32, 32, 16),
+            height: 140,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(5),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  //hex row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      //hex 1
-                      Row(
-                        children: <Widget>[
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text(
-                              'HEX 1:',
-                              style: smallText,
-                            ),
-                          ),
-                          SpecialText(
-                              text: '#' +
-                                  color1.value
-                                      .toRadixString(16)
-                                      .substring(2)
-                                      .toUpperCase()),
-                        ],
-                      ),
-                      //hex 2
-                      Row(
-                        children: <Widget>[
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text(
-                              'HEX 2:',
-                              style: smallText,
-                            ),
-                          ),
-                          SpecialText(
-                              text: '#' +
-                                  color2.value
-                                      .toRadixString(16)
-                                      .substring(2)
-                                      .toUpperCase()),
-                        ],
-                      ),
-                    ],
-                  ),
-                  //rgb and hsv 1 row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      //rgb 1
-                      Row(
-                        children: <Widget>[
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text(
-                              'RGB 1:',
-                              style: smallText,
-                            ),
-                          ),
-                          SpecialText(text: color1.red.toString()),
-                          SpecialText(text: color1.green.toString()),
-                          SpecialText(text: color1.blue.toString()),
-                        ],
-                      ),
-                      //hsv 1
-                      Row(
-                        children: <Widget>[
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 8.0, right: 8.0),
-                            child: Text(
-                              'HSV 1:',
-                              style: smallText,
-                            ),
-                          ),
-                          SpecialText(
-                              text: HSVColor.fromColor(color1)
-                                  .hue
-                                  .toStringAsFixed(0)),
-                          SpecialText(
-                              text:
-                                  (HSVColor.fromColor(color1).saturation * 100)
-                                      .toStringAsFixed(0)),
-                          SpecialText(
-                              text: (HSVColor.fromColor(color1).value * 100)
-                                  .toStringAsFixed(0)),
-                        ],
-                      ),
-                    ],
-                  ),
-                  //rgb and hsv 2 row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      //rgb 2
-                      Row(
-                        children: <Widget>[
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text(
-                              'RGB 2:',
-                              style: smallText,
-                            ),
-                          ),
-                          SpecialText(text: color2.red.toString()),
-                          SpecialText(text: color2.green.toString()),
-                          SpecialText(text: color2.blue.toString()),
-                        ],
-                      ),
-                      //hsv 2
-                      Row(
-                        children: <Widget>[
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 8.0, right: 8.0),
-                            child: Text(
-                              'HSV 2:',
-                              style: smallText,
-                            ),
-                          ),
-                          SpecialText(
-                              text: HSVColor.fromColor(color2)
-                                  .hue
-                                  .toStringAsFixed(0)),
-                          SpecialText(
-                              text:
-                                  (HSVColor.fromColor(color2).saturation * 100)
-                                      .toStringAsFixed(0)),
-                          SpecialText(
-                              text: (HSVColor.fromColor(color2).value * 100)
-                                  .toStringAsFixed(0)),
-                        ],
-                      ),
-                    ],
-                  ),
+              gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                stops: [0, 1],
+                colors: [
+                  color1,
+                  color2,
                 ],
-              )),
+              ),
+            ),
+          ),
+          GradientColorInfo(text: 'Color 1', color: color1, parent: this),
+          GradientColorInfo(text: 'Color 2', color: color2, parent: this),
         ],
+      ),
+    );
+  }
+}
+
+//new color info display
+class GradientColorInfo extends StatelessWidget {
+  final String text;
+  final Color color;
+  final _GradientPageState parent;
+
+  GradientColorInfo({this.text, this.color, this.parent});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.symmetric(horizontal: 28.0, vertical: 8),
+      elevation: 5,
+      child: Padding(
+        padding: EdgeInsets.all(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            //hex
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Text(
+                      text,
+                    ),
+                  ),
+                  SpecialText(
+                      text: '#' +
+                          color.value
+                              .toRadixString(16)
+                              .substring(2)
+                              .toUpperCase()),
+                ],
+              ),
+            ),
+            //color display
+            Stack(
+              children: <Widget>[
+                Material(
+                  elevation: 3,
+                  color: Colors.transparent,
+                  shadowColor: Colors.grey[800],
+                  child: Container(
+                    height: 40,
+                    margin: EdgeInsets.only(bottom: 4),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(5),
+                      ),
+                      color: color,
+                    ),
+                  ),
+                ),
+                //edit icon for color 1
+                Positioned(
+                  width: 40,
+                  height: 40,
+                  right: 0,
+                  bottom: 4,
+                  //color editing button
+                  child: IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () async {
+                      final resultColor = await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return SelectorCard(mainColor: color);
+                        },
+                      );
+
+                      if (resultColor != null) {
+                        parent.setState(() {
+                          if (text == 'Color 1') {
+                            parent.color1 = resultColor;
+                          } else {
+                            parent.color2 = resultColor;
+                          }
+                        });
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+            //color info
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                //rgb
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Text(
+                          'RGB:',
+                          style: smallText,
+                        ),
+                      ),
+                      SpecialText(text: color.red.toString()),
+                      SpecialText(text: color.green.toString()),
+                      SpecialText(text: color.blue.toString()),
+                    ],
+                  ),
+                ),
+                //spacing
+                SizedBox(
+                  width: 32,
+                ),
+                //hsv
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Text(
+                          'HSV:',
+                          style: smallText,
+                        ),
+                      ),
+                      SpecialText(
+                          text:
+                              HSVColor.fromColor(color).hue.toStringAsFixed(0)),
+                      SpecialText(
+                          text: (HSVColor.fromColor(color).saturation * 100)
+                              .toStringAsFixed(0)),
+                      SpecialText(
+                          text: (HSVColor.fromColor(color).value * 100)
+                              .toStringAsFixed(0)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
