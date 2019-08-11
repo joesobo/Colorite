@@ -1,8 +1,7 @@
-import 'package:colorite/components/color_indicator.dart';
-import 'package:colorite/components/color_info_popup.dart';
+import 'package:colorite/components/popups/color_info_popup.dart';
 import 'package:colorite/components/color_list_card.dart';
 import 'package:colorite/components/drawer.dart';
-import 'package:colorite/components/selector_card.dart';
+import 'package:colorite/components/popups/color_selector_popup.dart';
 import 'package:colorite/components/special_text.dart';
 import 'package:colorite/utilities/color_helper.dart';
 import 'package:colorite/utilities/constants.dart';
@@ -19,6 +18,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Color mainColor;
+  ColorListCard colorListCard = new ColorListCard();
 
   _HomePageState({this.mainColor});
 
@@ -53,135 +53,68 @@ class _HomePageState extends State<HomePage> {
           //list of color cards
           ColorListCard(
             text: 'Shade colors',
-            widgetList: createColorButton(
+            widgetList: colorListCard.createColorButton(
               ColorHelper().getShades(mainColor),
+              context,
             ),
             toolTip:
                 'A group of colors that have the same hue but different value',
           ),
           ColorListCard(
             text: 'Tint colors',
-            widgetList: createColorButton(
+            widgetList: colorListCard.createColorButton(
               ColorHelper().getTint(mainColor),
+              context,
             ),
             toolTip:
                 'A group of colors that have the same hue but different saturation',
           ),
           ColorListCard(
             text: 'Triadic colors',
-            widgetList: createColorButton(
+            widgetList: colorListCard.createColorButton(
               ColorHelper().getTriadic(mainColor),
+              context,
             ),
             toolTip:
                 'A group of colors that are evenly spaced around the color wheel',
           ),
           ColorListCard(
             text: 'Analogous colors',
-            widgetList: createColorButton(
+            widgetList: colorListCard.createColorButton(
               ColorHelper().getAnalogous(mainColor),
+              context,
             ),
             toolTip:
                 'A group of colors that are next to each other on the color wheel',
           ),
           ColorListCard(
             text: 'Complimentary colors',
-            widgetList: createColorButton(
+            widgetList: colorListCard.createColorButton(
               ColorHelper().getComplementary(mainColor),
+              context,
             ),
             toolTip:
                 'A group of colors that are opposite each other on the color wheel',
           ),
           ColorListCard(
             text: 'Split Complimentary colors',
-            widgetList: createColorButton(
+            widgetList: colorListCard.createColorButton(
               ColorHelper().getSplitComplement(mainColor),
+              context,
             ),
             toolTip:
                 'A group of colors that are split 3 ways around the color wheel',
           ),
           ColorListCard(
             text: 'Monochromatic colors',
-            widgetList: createColorButton(
-              ColorHelper().getMonochromatic(mainColor),
+            widgetList: colorListCard.createColorButton(
+              ColorHelper().getMonochromatic(mainColor), 
+              context,
             ),
             toolTip:
                 'A group of colors that have the same hue but different value and saturation',
           ),
         ],
-      ),
-    );
-  }
-
-  //decides which button based on order
-  List<Widget> createColorButton(List<Color> colorList) {
-    List<Widget> widgetList = [];
-    int count = 0;
-
-    for (Color color in colorList) {
-      //first color
-      if (colorList[0] == color && count == 0) {
-        widgetList.add(
-          radiusButton(
-            color,
-            BorderRadius.only(
-              topLeft: Radius.circular(5),
-              bottomLeft: Radius.circular(5),
-            ),
-          ),
-        );
-      }
-      //last color
-      else if (colorList[colorList.length - 1] == color &&
-          count == colorList.length - 1) {
-        widgetList.add(
-          radiusButton(
-            color,
-            BorderRadius.only(
-              topRight: Radius.circular(5),
-              bottomRight: Radius.circular(5),
-            ),
-          ),
-        );
-        // other colors
-      } else {
-        widgetList.add(
-          radiusButton(
-            color,
-            null,
-          ),
-        );
-      }
-      count++;
-    }
-    return widgetList;
-  }
-
-  //created button with changable radius
-  Widget radiusButton(Color color, BorderRadius border) {
-    return Expanded(
-      child: Material(
-        elevation: 3,
-        color: Colors.transparent,
-        shadowColor: Colors.grey[800],
-        child: FlatButton(
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return ColorInfoPopup(color: color);
-              },
-            );
-          },
-          padding: EdgeInsets.all(0),
-          child: Container(
-            height: 40,
-            margin: EdgeInsets.only(bottom: 4),
-            decoration: BoxDecoration(
-              borderRadius: border,
-              color: color,
-            ),
-          ),
-        ),
       ),
     );
   }
@@ -256,7 +189,7 @@ class ColorInfoCard extends StatelessWidget {
                       final resultColor = await showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return SelectorCard(mainColor: color);
+                          return ColorSelectorPopup(mainColor: color);
                         },
                       );
 

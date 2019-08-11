@@ -1,5 +1,5 @@
 import 'package:colorite/components/drawer.dart';
-import 'package:colorite/components/selector_card.dart';
+import 'package:colorite/components/popups/color_selector_popup.dart';
 import 'package:colorite/components/special_text.dart';
 import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
@@ -222,7 +222,7 @@ class GradientInfoCard extends StatelessWidget {
                       final resultColor = await showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return SelectorCard(mainColor: color);
+                          return ColorSelectorPopup(mainColor: color);
                         },
                       );
 

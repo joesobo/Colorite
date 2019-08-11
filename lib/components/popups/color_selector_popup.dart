@@ -7,8 +7,8 @@ enum Mode { rgb, hsv }
 
 Mode mode = Mode.rgb;
 
-class SelectorCard extends StatefulWidget {
-  SelectorCard({@required this.mainColor});
+class ColorSelectorPopup extends StatefulWidget {
+  ColorSelectorPopup({@required this.mainColor});
 
   final int r = 125;
   final int g = 125;
@@ -20,11 +20,11 @@ class SelectorCard extends StatefulWidget {
   final Color mainColor;
 
   @override
-  _SelectorCardState createState() => _SelectorCardState(
+  _ColorSelectorPopupState createState() => _ColorSelectorPopupState(
       r: r, g: g, b: b, h: h, s: s, v: v, mainColor: mainColor);
 }
 
-class _SelectorCardState extends State<SelectorCard> {
+class _ColorSelectorPopupState extends State<ColorSelectorPopup> {
   int r;
   int g;
   int b;
@@ -35,7 +35,7 @@ class _SelectorCardState extends State<SelectorCard> {
 
   TextEditingController hexController = TextEditingController();
 
-  _SelectorCardState(
+  _ColorSelectorPopupState(
       {this.r, this.g, this.b, this.h, this.s, this.v, this.mainColor});
 
   @override
@@ -214,7 +214,7 @@ class _SelectorCardState extends State<SelectorCard> {
 
 //switches between rgb and hsv
 class ModeSelector extends StatelessWidget {
-  final _SelectorCardState parent;
+  final _ColorSelectorPopupState parent;
 
   ModeSelector({@required this.parent});
 
@@ -290,7 +290,7 @@ class ModeSelector extends StatelessWidget {
 
 //creates a color slider based on mode
 class ColorSlider extends StatelessWidget {
-  final _SelectorCardState parent;
+  final _ColorSelectorPopupState parent;
   final String text;
   final int value;
   final Color activeColor;

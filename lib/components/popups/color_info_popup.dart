@@ -1,5 +1,5 @@
 import 'package:colorite/components/color_indicator.dart';
-import 'package:colorite/utilities/constants.dart';
+import 'package:colorite/components/special_text.dart';
 import 'package:flutter/material.dart';
 
 class ColorInfoPopup extends StatelessWidget {
@@ -31,43 +31,23 @@ class ColorInfoPopup extends StatelessWidget {
               Row(
                 children: <Widget>[
                   Text('RGB: '),
-                  specialText(color.red.toString()),
-                  specialText(color.green.toString()),
-                  specialText(color.blue.toString()),
+                  SpecialText(text: color.red.toString()),
+                  SpecialText(text: color.green.toString()),
+                  SpecialText(text: color.blue.toString()),
                 ],
               ),
               SizedBox(height: 8,),
               Row(
                 children: <Widget>[
                   Text('HSV: '),
-                  specialText(HSVColor.fromColor(color).hue.toStringAsFixed(0)),
-                  specialText((HSVColor.fromColor(color).saturation * 100).toStringAsFixed(0)),
-                  specialText((HSVColor.fromColor(color).value * 100).toStringAsFixed(0)),
+                  SpecialText(text: HSVColor.fromColor(color).hue.toStringAsFixed(0)),
+                  SpecialText(text: (HSVColor.fromColor(color).saturation * 100).toStringAsFixed(0)),
+                  SpecialText(text: (HSVColor.fromColor(color).value * 100).toStringAsFixed(0)),
                 ],
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  //text wrapped in special border
-  Widget specialText(String text) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 4),
-      padding: EdgeInsets.symmetric(horizontal: 4),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(
-          width: 1,
-          color: Colors.white,
-        ),
-      ),
-      child: Text(
-        text,
-        style: smallText,
       ),
     );
   }
