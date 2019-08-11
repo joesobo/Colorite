@@ -1,7 +1,6 @@
 import 'package:colorite/components/drawer.dart';
 import 'package:colorite/components/selector_card.dart';
 import 'package:colorite/components/special_text.dart';
-import 'package:colorite/utilities/color_helper.dart';
 import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +21,8 @@ class _GradientPageState extends State<GradientPage> {
   Color color1;
   Color color2;
   Color mainColor;
+  String dropDownStart = 'CenterLeft';
+  String dropDownEnd = 'CenterRight';
 
   _GradientPageState({this.color1, this.color2, this.mainColor});
 
@@ -55,8 +56,8 @@ class _GradientPageState extends State<GradientPage> {
                 Radius.circular(5),
               ),
               gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
+                begin: getAlignment(dropDownStart),
+                end: getAlignment(dropDownEnd),
                 stops: [0, 1],
                 colors: [
                   color1,
@@ -68,11 +69,87 @@ class _GradientPageState extends State<GradientPage> {
           //color info
           GradientInfoCard(text: 'Color 1', color: color1, parent: this),
           GradientInfoCard(text: 'Color 2', color: color2, parent: this),
-        
-          SizedBox(height: 8,),
+
+          //spacing
+          SizedBox(
+            height: 8,
+          ),
+
+          //gradient direction
+          directionDropDown('Color 1', dropDownStart, true),
+          directionDropDown('Color 2', dropDownEnd, false)
         ],
       ),
     );
+  }
+
+  Widget directionDropDown(String label, String value, bool start) {
+    return Card(
+      elevation: 5,
+      margin: EdgeInsets.fromLTRB(30, 8, 30, 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Text(label),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: DropdownButton<String>(
+              value: value,
+              onChanged: (String newVal) {
+                setState(() {
+                  if (start) {
+                    dropDownStart = newVal;
+                  } else {
+                    dropDownEnd = newVal;
+                  }
+                });
+              },
+              items: <String>[
+                'BottomCenter',
+                'BottomLeft',
+                'BottomRight',
+                'TopCenter',
+                'TopLeft',
+                'TopRight',
+                'Center',
+                'CenterLeft',
+                'CenterRight',
+              ].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Alignment getAlignment(String text) {
+    if (text == 'BottomCenter') {
+      return Alignment.bottomCenter;
+    } else if (text == 'BottomLeft') {
+      return Alignment.bottomLeft;
+    } else if (text == 'BottomRight') {
+      return Alignment.bottomRight;
+    } else if (text == 'TopCenter') {
+      return Alignment.topCenter;
+    } else if (text == 'TopLeft') {
+      return Alignment.topLeft;
+    } else if (text == 'TopRight') {
+      return Alignment.topRight;
+    } else if (text == 'Center') {
+      return Alignment.center;
+    } else if (text == 'CenterLeft') {
+      return Alignment.centerLeft;
+    } else {
+      return Alignment.centerRight;
+    }
   }
 }
 
