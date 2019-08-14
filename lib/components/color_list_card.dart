@@ -12,8 +12,9 @@ class ColorListCard extends StatelessWidget {
   final List<Color> colorList;
   final String toolTip;
   final int id;
+  final VoidCallback onDelete;
 
-  ColorListCard({this.text, this.colorList, this.toolTip, this.id});
+  ColorListCard({this.text, this.colorList, this.toolTip, this.id, this.onDelete});
 
   final dbHelper = DatabaseHelper.instance;
 
@@ -114,9 +115,7 @@ class ColorListCard extends StatelessWidget {
                           width: 20,
                           child: IconButton(
                             padding: EdgeInsets.all(0),
-                            onPressed: () {
-                              _delete(id);
-                            },
+                            onPressed: this.onDelete,
                             icon: Icon(
                               Icons.clear,
                               size: 20,
@@ -214,10 +213,5 @@ class ColorListCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void _delete(int id) async {
-    final rowsDeleted = await dbHelper.delete(id);
-    print('deleted $rowsDeleted row(s): row $id');
   }
 }
