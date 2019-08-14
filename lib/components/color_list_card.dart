@@ -4,7 +4,6 @@ import 'package:colorite/components/popups/color_info_popup.dart';
 import 'package:colorite/components/popups/palette_info_popup.dart';
 import 'package:colorite/components/popups/palette_popup.dart';
 import 'package:colorite/database/database_helper.dart';
-import 'package:colorite/models/my_color.dart';
 import 'package:colorite/models/palette.dart';
 import 'package:flutter/material.dart';
 
@@ -75,19 +74,25 @@ class ColorListCard extends StatelessWidget {
                                     },
                                   );
 
-                                  //convert color list to myColors then to list of strings
+                                  //convert color list to list of strings
                                   List<String> myColorList = [];
                                   for (Color color in colorList) {
-                                    myColorList.add(jsonEncode(convertFromColor(color)));
+                                    myColorList.add(color.value
+                                        .toRadixString(16)
+                                        .substring(2)
+                                        .toUpperCase());
                                   }
 
                                   //create new palette
                                   Palette palette = new Palette(
-                                      name: resultName, myColorList: jsonEncode(myColorList));
+                                      name: resultName,
+                                      myColorList: jsonEncode(myColorList));
                                   //convert to json and insert into database
                                   Map<String, dynamic> row = palette.toJson();
                                   final id = await dbHelper.insert(row);
                                   print('inserted row id: $id');
+                                  print('inserted row name: ${palette.name}');
+                                  print('inserted row list: ${palette.myColorList}');
                                 },
                                 icon: Icon(
                                   Icons.add_circle_outline,
@@ -113,9 +118,9 @@ class ColorListCard extends StatelessWidget {
   }
 
   //takes in a Color and returns a MyColor
-  MyColor convertFromColor(Color color) {
-    return MyColor(r: color.red, g: color.green, b: color.blue);
-  }
+  // MyColor convertFromColor(Color color) {
+  //   return MyColor(r: color.red, g: color.green, b: color.blue);
+  // }
 
   //decides which button based on order
   List<Widget> createColorButton(List<Color> colorList, BuildContext context) {

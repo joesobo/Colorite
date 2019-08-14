@@ -33,6 +33,7 @@ class PalettePopup extends StatelessWidget {
             ),
             RaisedButton(
               onPressed: (){
+                //print(value);
                 Navigator.pop(context, value);
               },
               color: Colors.blueGrey[600],
