@@ -53,64 +53,43 @@ class _HomePageState extends State<HomePage> {
           //list of color cards
           ColorListCard(
             text: 'Shade colors',
-            widgetList: colorListCard.createColorButton(
-              ColorHelper().getShades(mainColor),
-              context,
-            ),
+            colorList: ColorHelper().getShades(mainColor),
             toolTip:
                 'A group of colors that have the same hue but different value',
           ),
           ColorListCard(
             text: 'Tint colors',
-            widgetList: colorListCard.createColorButton(
-              ColorHelper().getTint(mainColor),
-              context,
-            ),
+            colorList: ColorHelper().getTint(mainColor),
             toolTip:
                 'A group of colors that have the same hue but different saturation',
           ),
           ColorListCard(
             text: 'Triadic colors',
-            widgetList: colorListCard.createColorButton(
-              ColorHelper().getTriadic(mainColor),
-              context,
-            ),
+            colorList: ColorHelper().getTriadic(mainColor),
             toolTip:
                 'A group of colors that are evenly spaced around the color wheel',
           ),
           ColorListCard(
             text: 'Analogous colors',
-            widgetList: colorListCard.createColorButton(
-              ColorHelper().getAnalogous(mainColor),
-              context,
-            ),
+            colorList: ColorHelper().getAnalogous(mainColor),
             toolTip:
                 'A group of colors that are next to each other on the color wheel',
           ),
           ColorListCard(
             text: 'Complimentary colors',
-            widgetList: colorListCard.createColorButton(
-              ColorHelper().getComplementary(mainColor),
-              context,
-            ),
+            colorList: ColorHelper().getComplementary(mainColor),
             toolTip:
                 'A group of colors that are opposite each other on the color wheel',
           ),
           ColorListCard(
             text: 'Split Complimentary colors',
-            widgetList: colorListCard.createColorButton(
-              ColorHelper().getSplitComplement(mainColor),
-              context,
-            ),
+            colorList: ColorHelper().getSplitComplement(mainColor),
             toolTip:
                 'A group of colors that are split 3 ways around the color wheel',
           ),
           ColorListCard(
             text: 'Monochromatic colors',
-            widgetList: colorListCard.createColorButton(
-              ColorHelper().getMonochromatic(mainColor), 
-              context,
-            ),
+            colorList: ColorHelper().getMonochromatic(mainColor),
             toolTip:
                 'A group of colors that have the same hue but different value and saturation',
           ),

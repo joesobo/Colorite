@@ -45,10 +45,7 @@ class PaletteDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return ColorListCard(
       text: title,
-      widgetList: ColorListCard().createColorButton(
-        ColorHelper().getMonochromatic(color),
-        context,
-      ),
+      colorList: ColorHelper().getMonochromatic(color),
     );
   }
 }

@@ -1,13 +1,23 @@
+import 'dart:convert';
+
 import 'package:colorite/components/popups/color_info_popup.dart';
 import 'package:colorite/components/popups/palette_info_popup.dart';
+import 'package:colorite/components/popups/palette_popup.dart';
+import 'package:colorite/database/database_helper.dart';
+import 'package:colorite/models/my_color.dart';
+import 'package:colorite/models/palette.dart';
 import 'package:flutter/material.dart';
 
 class ColorListCard extends StatelessWidget {
   final String text;
-  final List<Widget> widgetList;
+  final List<Color> colorList;
   final String toolTip;
 
-  ColorListCard({this.text, this.widgetList, this.toolTip});
+  String name = '';
+
+  ColorListCard({this.text, this.colorList, this.toolTip});
+
+  final dbHelper = DatabaseHelper.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -21,64 +31,90 @@ class ColorListCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               //top row
-              toolTip != null ? 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(text),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        height: 20,
-                        width: 20,
-                        child: IconButton(
-                          padding: EdgeInsets.all(0),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return PaletteInfoPopup(text: toolTip);
-                              },
-                            );
-                          },
-                          icon: Icon(
-                            Icons.info_outline,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Container(
-                        height: 20,
-                        width: 20,
-                        child: IconButton(
-                          padding: EdgeInsets.all(0),
-                          onPressed: () {
-                            //TODO: add to palette
-                          },
-                          icon: Icon(
-                            Icons.add_circle_outline,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              )
-              : Text(text),
+              toolTip != null
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(text),
+                        Row(
+                          children: <Widget>[
+                            //show palette info
+                            Container(
+                              height: 20,
+                              width: 20,
+                              child: IconButton(
+                                padding: EdgeInsets.all(0),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return PaletteInfoPopup(text: toolTip);
+                                    },
+                                  );
+                                },
+                                icon: Icon(
+                                  Icons.info_outline,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            //add palette to saved
+                            Container(
+                              height: 20,
+                              width: 20,
+                              child: IconButton(
+                                padding: EdgeInsets.all(0),
+                                onPressed: () async {
+                                  final resultName = await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return PalettePopup();
+                                    },
+                                  );
+
+                                  //convert color list to myColors then to list of strings
+                                  List<String> myColorList = [];
+                                  for (Color color in colorList) {
+                                    myColorList.add(jsonEncode(convertFromColor(color)));
+                                  }
+
+                                  //create new palette
+                                  Palette palette = new Palette(
+                                      name: resultName, myColorList: jsonEncode(myColorList));
+                                  //convert to json and insert into database
+                                  Map<String, dynamic> row = palette.toJson();
+                                  final id = await dbHelper.insert(row);
+                                  print('inserted row id: $id');
+                                },
+                                icon: Icon(
+                                  Icons.add_circle_outline,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    )
+                  : Text(text),
               //color list
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: Row(children: widgetList),
+                child: Row(children: createColorButton(colorList, context)),
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  //takes in a Color and returns a MyColor
+  MyColor convertFromColor(Color color) {
+    return MyColor(r: color.red, g: color.green, b: color.blue);
   }
 
   //decides which button based on order
@@ -157,5 +193,4 @@ class ColorListCard extends StatelessWidget {
       ),
     );
   }
-
 }
