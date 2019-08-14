@@ -11,10 +11,9 @@ class ColorListCard extends StatelessWidget {
   final String text;
   final List<Color> colorList;
   final String toolTip;
+  final int id;
 
-  String name = '';
-
-  ColorListCard({this.text, this.colorList, this.toolTip});
+  ColorListCard({this.text, this.colorList, this.toolTip, this.id});
 
   final dbHelper = DatabaseHelper.instance;
 
@@ -92,7 +91,8 @@ class ColorListCard extends StatelessWidget {
                                   final id = await dbHelper.insert(row);
                                   print('inserted row id: $id');
                                   print('inserted row name: ${palette.name}');
-                                  print('inserted row list: ${palette.myColorList}');
+                                  print(
+                                      'inserted row list: ${palette.myColorList}');
                                 },
                                 icon: Icon(
                                   Icons.add_circle_outline,
@@ -104,11 +104,33 @@ class ColorListCard extends StatelessWidget {
                         )
                       ],
                     )
-                  : Text(text),
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(text),
+                        //show palette info
+                        Container(
+                          height: 20,
+                          width: 20,
+                          child: IconButton(
+                            padding: EdgeInsets.all(0),
+                            onPressed: () {
+                              _delete(id);
+                            },
+                            icon: Icon(
+                              Icons.clear,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
               //color list
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: Row(children: createColorButton(colorList, context)),
+                child: Row(
+                  children: createColorButton(colorList, context),
+                ),
               ),
             ],
           ),
@@ -116,11 +138,6 @@ class ColorListCard extends StatelessWidget {
       ),
     );
   }
-
-  //takes in a Color and returns a MyColor
-  // MyColor convertFromColor(Color color) {
-  //   return MyColor(r: color.red, g: color.green, b: color.blue);
-  // }
 
   //decides which button based on order
   List<Widget> createColorButton(List<Color> colorList, BuildContext context) {
@@ -197,5 +214,10 @@ class ColorListCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _delete(int id) async {
+    final rowsDeleted = await dbHelper.delete(id);
+    print('deleted $rowsDeleted row(s): row $id');
   }
 }

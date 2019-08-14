@@ -1,16 +1,17 @@
 import 'dart:io';
 
+import 'package:colorite/models/palette.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
-  static final _databaseName = 'dbPalette05.db';
+  static final _databaseName = 'dbPalette08.db';
   static final _databaseVersion = 1;
 
   static final table = 'my_table';
 
-  static final columnId = '_id';
+  static final columnId = 'id';
   static final columnName = 'name';
   static final columnJsonPalette = 'myColorList';
 
@@ -58,6 +59,17 @@ class DatabaseHelper {
     return await db.query(table);
   }
 
+  //returns table as list of palettes
+  Future<List<Palette>> getPalettes() async {
+    Database db = await instance.database;
+    List<Map<String, dynamic>> list = await db.rawQuery('SELECT * FROM $table');
+    List<Palette> palettes = [];
+    for(int i = 0; i < list.length; i++){
+      palettes.add(Palette.fromJson(list[i]));
+    }
+    return palettes;
+  }
+
   //returns number of rows in table
   Future<int> getRowCount() async {
     Database db = await instance.database;
@@ -72,9 +84,8 @@ class DatabaseHelper {
   }
 
   //deletes row in table
-  Future<int> delete(Map<String, dynamic> row) async {
+  Future<int> delete(int id) async {
     Database db = await instance.database;
-    int id = row[columnId];
     return await db.delete(table, where: '$columnId = ?', whereArgs: [id]);
   }
 }

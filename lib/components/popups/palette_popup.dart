@@ -19,6 +19,7 @@ class PalettePopup extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: TextField(
+                textCapitalization: TextCapitalization.sentences,
                 onChanged: (text) {
                   value = text;
                 },

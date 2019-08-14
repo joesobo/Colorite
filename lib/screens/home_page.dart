@@ -1,4 +1,3 @@
-import 'package:colorite/components/popups/color_info_popup.dart';
 import 'package:colorite/components/color_list_card.dart';
 import 'package:colorite/components/drawer.dart';
 import 'package:colorite/components/popups/color_selector_popup.dart';
