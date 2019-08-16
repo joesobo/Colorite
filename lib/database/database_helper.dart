@@ -83,6 +83,12 @@ class DatabaseHelper {
     return await db.update(table, row, where: '$columnId = ?', whereArgs: [id]);
   }
 
+  void updateFullTable(List<Map> rows) async {
+    for(Map row in rows){
+      update(row);
+    }
+  }
+
   //deletes row in table
   Future<int> delete(int id) async {
     Database db = await instance.database;

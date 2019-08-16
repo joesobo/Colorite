@@ -1,8 +1,9 @@
+import 'dart:convert';
+
 import 'package:colorite/components/color_list_card.dart';
 import 'package:colorite/components/drawer.dart';
 import 'package:colorite/database/database_helper.dart';
 import 'package:colorite/models/palette.dart';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class PalettePage extends StatelessWidget {
@@ -67,51 +68,78 @@ class PaletteList extends StatefulWidget {
 
 class _PaletteListState extends State<PaletteList> {
   final dbHelper = DatabaseHelper.instance;
+  List<Palette> paletteList;
+
+  @override
+  void initState() {
+    getPalettes();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Flexible(
-      child: Container(
-        child: FutureBuilder<List<Palette>>(
-          future: getPalletesFromDB(),
-          builder: (context, snapshot) {
-            if (snapshot.data != null) {
-              if (snapshot.hasData) {
-                return ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (context, index) {
-                    return PaletteDisplay(
-                        title: snapshot.data[index].name,
-                        colorList: getStringList(
-                            jsonDecode(snapshot.data[index].myColorList)),
-                        id: snapshot.data[index].id,
-                        onDelete: () => removeItem(snapshot.data[index].id));
-                  },
-                );
-              } else if (snapshot.data.length == 0) {
-                return Text('No data found');
-              }
-            } else {
-              return Text('No data found');
+      child: ReorderableListView(
+        //header: TextField(),
+        children: getPaletteList(),
+        onReorder: (int oldIndex, int newIndex) {
+          if (newIndex > oldIndex) {
+            newIndex -= 1;
+          }
+
+          setState(() {
+            var item = paletteList.removeAt(oldIndex);
+            paletteList.insert(newIndex, item);
+
+            //get new database info
+            List<Map> rows = [];
+            for (Palette palette in paletteList) {
+              Map<String, dynamic> row = palette.toJson();
+              rows.add(row);
             }
-          },
-        ),
+
+            dbHelper.updateFullTable(rows);
+            getPaletteList();
+          });
+
+          //TODO update database on change
+        },
       ),
     );
   }
 
+  List<Widget> getPaletteList() {
+    List<Widget> widgetList = [];
+    if (paletteList != null) {
+      for (Palette palette in paletteList) {
+        widgetList.add(
+          ListTile(
+            key: Key(palette.id.toString()),
+            title: PaletteDisplay(
+              title: palette.name,
+              colorList: getStringList(jsonDecode(palette.myColorList)),
+              id: palette.id,
+              onDelete: () => removeItem(palette.id),
+            ),
+          ),
+        );
+      }
+    }
+    return widgetList;
+  }
+
+  //deletes item with id
   void removeItem(int id) async {
     final rowsDeleted = await dbHelper.delete(id);
-    setState(() {
-      getPalletesFromDB();
-    });
+    getPalettes();
     print('deleted $rowsDeleted row(s): row $id');
   }
 
-  //accesses database and returns Future list of palettes
-  Future<List<Palette>> getPalletesFromDB() async {
-    Future<List<Palette>> palettes = dbHelper.getPalettes();
-    return palettes;
+  void getPalettes() async {
+    List<Palette> palettes = await dbHelper.getPalettes();
+    setState(() {
+      paletteList = palettes;
+    });
   }
 
   //converts dynamic list to string list
