@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:colorite/components/color_list_card.dart';
 import 'package:colorite/components/drawer.dart';
+import 'package:colorite/components/popups/custom_palette_popup.dart';
 import 'package:colorite/database/database_helper.dart';
 import 'package:colorite/models/palette.dart';
 import 'package:flutter/material.dart';
@@ -22,14 +23,25 @@ class PalettePage extends StatelessWidget {
           Row(
             children: <Widget>[
               IconButton(
-                icon: Icon(Icons.add_circle_outline, color: Colors.white,),
-                onPressed: (){
-                  //TODO: add popup for custom palettes
+                icon: Icon(
+                  Icons.add_circle_outline,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CustomPalettePopup();
+                    },
+                  );
                 },
               ),
               IconButton(
-                icon: Icon(Icons.sort, color: Colors.white,),
-                onPressed: (){
+                icon: Icon(
+                  Icons.sort,
+                  color: Colors.white,
+                ),
+                onPressed: () {
                   //TODO: add sorting for list
                 },
               ),
