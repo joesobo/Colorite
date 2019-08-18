@@ -64,7 +64,7 @@ class DatabaseHelper {
     Database db = await instance.database;
     List<Map<String, dynamic>> list = await db.rawQuery('SELECT * FROM $table');
     List<Palette> palettes = [];
-    for(int i = 0; i < list.length; i++){
+    for (int i = 0; i < list.length; i++) {
       palettes.add(Palette.fromJson(list[i]));
     }
     return palettes;
@@ -73,7 +73,8 @@ class DatabaseHelper {
   //returns number of rows in table
   Future<int> getRowCount() async {
     Database db = await instance.database;
-    return Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM $table'));
+    return Sqflite.firstIntValue(
+        await db.rawQuery('SELECT COUNT(*) FROM $table'));
   }
 
   //updates row in table
@@ -81,12 +82,6 @@ class DatabaseHelper {
     Database db = await instance.database;
     int id = row[columnId];
     return await db.update(table, row, where: '$columnId = ?', whereArgs: [id]);
-  }
-
-  void updateFullTable(List<Map> rows) async {
-    for(Map row in rows){
-      update(row);
-    }
   }
 
   //deletes row in table

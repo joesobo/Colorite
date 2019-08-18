@@ -104,23 +104,22 @@ class _PaletteListState extends State<PaletteList> {
         children: (filteredList == null || filteredList.isEmpty)
             ? getPaletteList(paletteList)
             : getPaletteList(filteredList),
-        onReorder: (int oldIndex, int newIndex) {
+        onReorder: (int oldIndex, int newIndex) async {
           if (newIndex > oldIndex) {
             newIndex -= 1;
           }
 
-          setState(() async {
-            var item = paletteList.removeAt(oldIndex);
-            paletteList.insert(newIndex, item);
+          var item = paletteList.removeAt(oldIndex);
+          paletteList.insert(newIndex, item);
 
-            //get new database info
-            List<Map> rows = [];
-            for (Palette palette in paletteList) {
-              Map<String, dynamic> row = palette.toJson();
-              rows.add(row);
-            }
+          Map<String, dynamic> oldPalette = paletteList[oldIndex].toJson();
+          Map<String, dynamic> newPalette = paletteList[newIndex].toJson();
 
-            dbHelper.updateFullTable(rows);
+          await dbHelper.update(oldPalette);
+          await dbHelper.update(newPalette);
+
+          setState(() {
+            //getPalettes();
             getPaletteList(paletteList);
           });
         },
