@@ -1,5 +1,5 @@
 class Palette{
-  final int id;
+  int id;
   final String name;
   final String myColorList;
 

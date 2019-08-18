@@ -19,11 +19,21 @@ class PalettePage extends StatelessWidget {
         backgroundColor: color,
         iconTheme: new IconThemeData(color: Colors.white),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add_circle_outline, color: Colors.white,),
-            onPressed: (){
-              //TODO: add popup for custom palettes
-            },
+          Row(
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.add_circle_outline, color: Colors.white,),
+                onPressed: (){
+                  //TODO: add popup for custom palettes
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.sort, color: Colors.white,),
+                onPressed: (){
+                  //TODO: add sorting for list
+                },
+              ),
+            ],
           )
         ],
       ),
@@ -117,17 +127,24 @@ class _PaletteListState extends State<PaletteList> {
             newIndex -= 1;
           }
 
+          Palette oldPalette = paletteList[oldIndex];
+          Palette newPalette = paletteList[newIndex];
+
+          int temp = oldPalette.id;
+          oldPalette.id = newPalette.id;
+          newPalette.id = temp;
+
+          Map<String, dynamic> oldMap = oldPalette.toJson();
+          Map<String, dynamic> newMap = newPalette.toJson();
+
           var item = paletteList.removeAt(oldIndex);
           paletteList.insert(newIndex, item);
 
-          Map<String, dynamic> oldPalette = paletteList[oldIndex].toJson();
-          Map<String, dynamic> newPalette = paletteList[newIndex].toJson();
-
-          await dbHelper.update(oldPalette);
-          await dbHelper.update(newPalette);
+          await dbHelper.update(oldMap);
+          await dbHelper.update(newMap);
 
           setState(() {
-            //getPalettes();
+            getPalettes();
             getPaletteList(paletteList);
           });
         },
