@@ -69,6 +69,8 @@ class PaletteList extends StatefulWidget {
 class _PaletteListState extends State<PaletteList> {
   final dbHelper = DatabaseHelper.instance;
   List<Palette> paletteList;
+  List<Palette> filteredList = [];
+  String inputText = '';
 
   @override
   void initState() {
@@ -80,14 +82,34 @@ class _PaletteListState extends State<PaletteList> {
   Widget build(BuildContext context) {
     return Flexible(
       child: ReorderableListView(
-        //header: TextField(),
-        children: getPaletteList(),
+        header: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 32),
+          child: TextField(
+            onChanged: (text) {
+              setState(() {
+                inputText = text;
+              });
+              filterSearchResults(text);
+            },
+            decoration: new InputDecoration(
+              labelText: "Search",
+              prefixIcon: Icon(Icons.search),
+              border: new OutlineInputBorder(
+                borderRadius: new BorderRadius.circular(10.0),
+                borderSide: new BorderSide(),
+              ),
+            ),
+          ),
+        ),
+        children: (filteredList == null || filteredList.isEmpty)
+            ? getPaletteList(paletteList)
+            : getPaletteList(filteredList),
         onReorder: (int oldIndex, int newIndex) {
           if (newIndex > oldIndex) {
             newIndex -= 1;
           }
 
-          setState(() {
+          setState(() async {
             var item = paletteList.removeAt(oldIndex);
             paletteList.insert(newIndex, item);
 
@@ -99,21 +121,37 @@ class _PaletteListState extends State<PaletteList> {
             }
 
             dbHelper.updateFullTable(rows);
-            getPaletteList();
+            getPaletteList(paletteList);
           });
-
-          //TODO update database on change
         },
       ),
     );
   }
 
-  List<Widget> getPaletteList() {
+  //filters paletteList by input string
+  void filterSearchResults(String query) {
+    List<Palette> returnSearchList = [];
+    if (query.isNotEmpty || query == '') {
+      paletteList.forEach((item) {
+        if (item.name.toLowerCase().contains(query.toLowerCase())) {
+          returnSearchList.add(item);
+        }
+      });
+    }
+
+    setState(() {
+      filteredList = returnSearchList;
+    });
+  }
+
+  //returns list of palette widgets
+  List<Widget> getPaletteList(List<Palette> pList) {
     List<Widget> widgetList = [];
-    if (paletteList != null) {
-      for (Palette palette in paletteList) {
+    if (pList != null) {
+      for (Palette palette in pList) {
         widgetList.add(
           ListTile(
+            contentPadding: EdgeInsets.all(0),
             key: Key(palette.id.toString()),
             title: PaletteDisplay(
               title: palette.name,
@@ -135,11 +173,15 @@ class _PaletteListState extends State<PaletteList> {
     print('deleted $rowsDeleted row(s): row $id');
   }
 
+  //calls database and returns list of palettes
   void getPalettes() async {
     List<Palette> palettes = await dbHelper.getPalettes();
     setState(() {
       paletteList = palettes;
     });
+    if (filteredList != null || filteredList.isNotEmpty) {
+      filterSearchResults(inputText);
+    }
   }
 
   //converts dynamic list to string list
