@@ -18,6 +18,14 @@ class PalettePage extends StatelessWidget {
         title: Text('Palettes'),
         backgroundColor: color,
         iconTheme: new IconThemeData(color: Colors.white),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add_circle_outline, color: Colors.white,),
+            onPressed: (){
+              //TODO: add popup for custom palettes
+            },
+          )
+        ],
       ),
       drawer: SideDrawer(mainColor: color),
       body: Column(
