@@ -8,26 +8,25 @@ class GradientPage extends StatefulWidget {
   //TODO: add color saving when navigating between pages
   final Color color1;
   final Color color2;
-  final Color mainColor;
 
-  GradientPage({this.color1, this.color2, this.mainColor});
+  GradientPage({this.color1, this.color2});
 
   @override
   _GradientPageState createState() =>
-      _GradientPageState(color1: color1, color2: color2, mainColor: mainColor);
+      _GradientPageState(color1: color1, color2: color2);
 }
 
 class _GradientPageState extends State<GradientPage> {
   Color color1;
   Color color2;
-  Color mainColor;
   String dropDownStart = 'CenterLeft';
   String dropDownEnd = 'CenterRight';
 
-  _GradientPageState({this.color1, this.color2, this.mainColor});
+  _GradientPageState({this.color1, this.color2});
 
   @override
   void initState() {
+
     if (color1 == null || color2 == null) {
       color1 = Colors.red;
       color2 = Colors.yellow;
@@ -43,7 +42,7 @@ class _GradientPageState extends State<GradientPage> {
         backgroundColor: color1,
         iconTheme: new IconThemeData(color: Colors.white),
       ),
-      drawer: SideDrawer(mainColor: mainColor, color1: color1, color2: color2),
+      drawer: SideDrawer(color1: color1, color2: color2),
       body: Column(
         children: <Widget>[
           //color display

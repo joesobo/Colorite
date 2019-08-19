@@ -4,20 +4,31 @@ import 'package:colorite/components/color_list_card.dart';
 import 'package:colorite/components/drawer.dart';
 import 'package:colorite/components/popups/custom_palette_popup.dart';
 import 'package:colorite/database/database_helper.dart';
+import 'package:colorite/database/shared_pref.dart';
 import 'package:colorite/models/palette.dart';
 import 'package:flutter/material.dart';
 
-class PalettePage extends StatelessWidget {
-  final Color color;
+class PalettePage extends StatefulWidget {
+  @override
+  _PalettePageState createState() => _PalettePageState();
+}
 
-  PalettePage({this.color});
+class _PalettePageState extends State<PalettePage> {
+  Color mainColor;
+
+  @override
+  void initState() {
+    getColor();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Palettes'),
-        backgroundColor: color,
+        backgroundColor: mainColor,
         iconTheme: new IconThemeData(color: Colors.white),
         actions: <Widget>[
           Row(
@@ -49,7 +60,7 @@ class PalettePage extends StatelessWidget {
           )
         ],
       ),
-      drawer: SideDrawer(mainColor: color),
+      drawer: SideDrawer(),
       body: Column(
         children: <Widget>[
           SizedBox(
@@ -59,6 +70,16 @@ class PalettePage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  //returns shared preferences accent color
+  void getColor() async {
+    SharedPref sharedPref = new SharedPref();
+    Color color = await sharedPref.loadColor();
+
+    setState(() {
+      mainColor = color;
+    });
   }
 }
 

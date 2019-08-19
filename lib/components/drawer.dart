@@ -1,3 +1,4 @@
+import 'package:colorite/database/shared_pref.dart';
 import 'package:colorite/screens/gradient_page.dart';
 import 'package:colorite/screens/home_page.dart';
 import 'package:colorite/screens/palette_page.dart';
@@ -5,12 +6,30 @@ import 'package:colorite/screens/settings_page.dart';
 import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
-class SideDrawer extends StatelessWidget {
-  final Color mainColor;
+class SideDrawer extends StatefulWidget {
   final Color color1;
   final Color color2;
 
-  SideDrawer({this.mainColor, this.color1, this.color2});
+  SideDrawer({this.color1, this.color2});
+
+  @override
+  _SideDrawerState createState() =>
+      _SideDrawerState(color1: color1, color2: color2);
+}
+
+class _SideDrawerState extends State<SideDrawer> {
+  Color color1;
+  Color color2;
+  Color mainColor;
+
+  _SideDrawerState({this.color1, this.color2});
+
+  @override
+  void initState() {
+    getColor();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +50,7 @@ class SideDrawer extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                //home page
                 FlatButton(
                   child: Text(
                     'Colors',
@@ -46,6 +66,7 @@ class SideDrawer extends StatelessWidget {
                     );
                   },
                 ),
+                //palette page
                 FlatButton(
                   child: Text(
                     'Palettes',
@@ -56,11 +77,12 @@ class SideDrawer extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PalettePage(color: mainColor),
+                        builder: (context) => PalettePage(),
                       ),
                     );
                   },
                 ),
+                //gradient page
                 FlatButton(
                   child: Text(
                     'Gradient',
@@ -71,11 +93,14 @@ class SideDrawer extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => GradientPage(color1: color1, color2: color2, mainColor: mainColor),
+                        builder: (context) => GradientPage(
+                            color1: color1,
+                            color2: color2,),
                       ),
                     );
                   },
                 ),
+                //setings page
                 FlatButton(
                   child: Text(
                     'Settings',
@@ -86,7 +111,7 @@ class SideDrawer extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SettingsPage(color: mainColor),
+                        builder: (context) => SettingsPage(),
                       ),
                     );
                   },
@@ -97,5 +122,15 @@ class SideDrawer extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  //returns shared preferences accent color
+  void getColor() async {
+    SharedPref sharedPref = new SharedPref();
+    Color color = await sharedPref.loadColor();
+
+    setState(() {
+      mainColor = color;
+    });
   }
 }

@@ -2,6 +2,7 @@ import 'package:colorite/components/color_list_card.dart';
 import 'package:colorite/components/drawer.dart';
 import 'package:colorite/components/popups/color_selector_popup.dart';
 import 'package:colorite/components/special_text.dart';
+import 'package:colorite/database/shared_pref.dart';
 import 'package:colorite/utilities/color_helper.dart';
 import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
@@ -18,11 +19,10 @@ class _HomePageState extends State<HomePage> {
   ColorListCard colorListCard = new ColorListCard();
   ColorHelper colorHelper = new ColorHelper();
 
-  _HomePageState({this.mainColor});
-
   @override
   void initState() {
-    loadColor();
+    getColor();
+
     super.initState();
   }
 
@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: mainColor,
         iconTheme: new IconThemeData(color: Colors.white),
       ),
-      drawer: SideDrawer(mainColor: mainColor),
+      drawer: SideDrawer(),
       body: ListView(
         children: <Widget>[
           //color viewer
@@ -104,18 +104,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  //loads accent color from shared preferences
-  void loadColor() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  //returns shared preferences accent color
+  void getColor() async {
+    SharedPref sharedPref = new SharedPref();
+    Color color = await sharedPref.loadColor();
 
     setState(() {
-      String hexString = prefs.getString('mainAccent');
-      Color tempColor;
-      if(hexString != null){
-        tempColor = colorHelper.fromHex(hexString);
-      }
-      
-      mainColor = (tempColor ?? accentColor);
+      mainColor = color;
     });
   }
 }

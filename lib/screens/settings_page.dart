@@ -1,25 +1,36 @@
 import 'package:colorite/components/drawer.dart';
+import 'package:colorite/database/shared_pref.dart';
 import 'package:colorite/utilities/color_helper.dart';
 import 'package:flutter/material.dart';
 
-class SettingsPage extends StatelessWidget {
-  final Color color;
+class SettingsPage extends StatefulWidget {
+  @override
+  _SettingsPageState createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  Color mainColor;
   final bool isSwitched = false;
 
   final Color darkSwitch = Color(0xff3c344a);
   final Color lightSwitch = Color(0xffd9bd82);
 
-  SettingsPage({this.color});
+  @override
+  void initState() {
+    getColor();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
-        backgroundColor: color,
+        backgroundColor: mainColor,
         iconTheme: new IconThemeData(color: Colors.white),
       ),
-      drawer: SideDrawer(mainColor: color),
+      drawer: SideDrawer(),
       body: Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: Column(
@@ -52,5 +63,15 @@ class SettingsPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  //returns shared preferences accent color
+  void getColor() async {
+    SharedPref sharedPref = new SharedPref();
+    Color color = await sharedPref.loadColor();
+
+    setState(() {
+      mainColor = color;
+    });
   }
 }
