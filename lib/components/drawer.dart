@@ -41,7 +41,7 @@ class SideDrawer extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => HomePage(mainColor: mainColor),
+                        builder: (context) => HomePage(),
                       ),
                     );
                   },

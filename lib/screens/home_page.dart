@@ -5,21 +5,26 @@ import 'package:colorite/components/special_text.dart';
 import 'package:colorite/utilities/color_helper.dart';
 import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
-  final Color mainColor;
-
-  HomePage({this.mainColor});
 
   @override
-  _HomePageState createState() => _HomePageState(mainColor: mainColor);
+  _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   Color mainColor;
   ColorListCard colorListCard = new ColorListCard();
+  ColorHelper colorHelper = new ColorHelper();
 
   _HomePageState({this.mainColor});
+
+  @override
+  void initState() {
+    loadColor();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +52,9 @@ class _HomePageState extends State<HomePage> {
           //new color info
           ColorInfoCard(text: 'Hex: ', color: mainColor, parent: this),
 
-          SizedBox(height: 8,),
+          SizedBox(
+            height: 8,
+          ),
 
           //list of color cards
           ColorListCard(
@@ -96,6 +103,21 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  //loads accent color from shared preferences
+  void loadColor() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      String hexString = prefs.getString('mainAccent');
+      Color tempColor;
+      if(hexString != null){
+        tempColor = colorHelper.fromHex(hexString);
+      }
+      
+      mainColor = (tempColor ?? accentColor);
+    });
+  }
 }
 
 //new color info display
@@ -103,6 +125,7 @@ class ColorInfoCard extends StatelessWidget {
   final String text;
   final Color color;
   final _HomePageState parent;
+  ColorHelper colorHelper = new ColorHelper();
 
   ColorInfoCard({this.text, this.color, this.parent});
 
@@ -129,10 +152,7 @@ class ColorInfoCard extends StatelessWidget {
                   ),
                   SpecialText(
                       text: '#' +
-                          color.value
-                              .toRadixString(16)
-                              .substring(2)
-                              .toUpperCase()),
+                          colorHelper.toHex(color)),
                 ],
               ),
             ),
@@ -173,7 +193,8 @@ class ColorInfoCard extends StatelessWidget {
 
                       if (resultColor != null) {
                         parent.setState(() {
-                          parent.mainColor = resultColor;
+                          setColor(parent, resultColor);
+                          //parent.mainColor = resultColor;
                         });
                       }
                     },
@@ -237,5 +258,17 @@ class ColorInfoCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  //sets accent color for shared preferences
+  void setColor(_HomePageState parent, Color color) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    ColorHelper colorHelper = new ColorHelper();
+
+    parent.setState(() {
+      parent.mainColor = (color ?? accentColor);
+
+      prefs.setString('mainAccent', colorHelper.toHex(color));
+    });
   }
 }

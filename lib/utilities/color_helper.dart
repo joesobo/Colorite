@@ -50,8 +50,7 @@ class ColorHelper {
     result.add(newColor.toColor());
 
     //color 4
-    newColor =
-        HSVColor.fromAHSV(1, newHue, color.saturation, color.value);
+    newColor = HSVColor.fromAHSV(1, newHue, color.saturation, color.value);
     result.add(newColor.toColor());
 
     return result;
@@ -70,11 +69,10 @@ class ColorHelper {
 
     //color 2
     double newValue;
-    color.value <= .70 ?
-    newValue = color.value + .3 : 
-    newValue = color.value - .3;
-    newColor =
-        HSVColor.fromAHSV(1, newHue, color.saturation, newValue);
+    color.value <= .70
+        ? newValue = color.value + .3
+        : newValue = color.value - .3;
+    newColor = HSVColor.fromAHSV(1, newHue, color.saturation, newValue);
     result.add(newColor.toColor());
 
     //main color
@@ -86,11 +84,10 @@ class ColorHelper {
     result.add(newColor.toColor());
 
     //color 4
-    color.value <= .70 ?
-    newValue = color.value + .3 : 
-    newValue = color.value - .3;
-    newColor =
-        HSVColor.fromAHSV(1, newHue, color.saturation, newValue);
+    color.value <= .70
+        ? newValue = color.value + .3
+        : newValue = color.value - .3;
+    newColor = HSVColor.fromAHSV(1, newHue, color.saturation, newValue);
     result.add(newColor.toColor());
 
     return result;
@@ -117,11 +114,10 @@ class ColorHelper {
 
     //color 3
     double newValue;
-    color.value <= .70 ?
-    newValue = color.value + .3 : 
-    newValue = color.value - .3;
-    newColor =
-        HSVColor.fromAHSV(1, color.hue, color.saturation, newValue);
+    color.value <= .70
+        ? newValue = color.value + .3
+        : newValue = color.value - .3;
+    newColor = HSVColor.fromAHSV(1, color.hue, color.saturation, newValue);
     result.add(newColor.toColor());
 
     //color 4
@@ -153,7 +149,7 @@ class ColorHelper {
 
     //color 3
     newHue = ((color.hue - 30) - 360).abs();
-    if(newHue >= 360){
+    if (newHue >= 360) {
       newHue = 360;
     }
     newColor = HSVColor.fromAHSV(1, newHue, color.saturation, color.value);
@@ -161,7 +157,7 @@ class ColorHelper {
 
     //color 4
     newHue = ((color.hue - 60) - 360).abs();
-    if(newHue >= 360){
+    if (newHue >= 360) {
       newHue = 360;
     }
     newColor = HSVColor.fromAHSV(1, newHue, color.saturation, color.value);
@@ -290,7 +286,7 @@ class ColorHelper {
 
     //color 1
     double newValue = color.value + 0.15;
-    if(newValue >= 1){
+    if (newValue >= 1) {
       newValue = 1.0;
     }
     HSVColor newColor =
@@ -298,4 +294,19 @@ class ColorHelper {
     return newColor.toColor();
   }
 
+  //converts color to hex string
+  String toHex(Color color) {
+    return color.value.toRadixString(16).substring(2).toUpperCase();
+  }
+
+  //converts hex string to color
+  Color fromHex(String hex) {
+    Color tempColor;
+    if (hex != null) {
+      String hexText = 'FF' + hex;
+      int hexInt = int.parse(hexText, radix: 16);
+      tempColor = Color(hexInt);
+    }
+    return tempColor;
+  }
 }

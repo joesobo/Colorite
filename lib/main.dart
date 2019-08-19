@@ -1,5 +1,4 @@
 import 'package:colorite/screens/home_page.dart';
-import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -10,7 +9,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData.dark(),
-      home: HomePage(mainColor: accentColor,),
+      home: HomePage(),
     );
   }
 }
