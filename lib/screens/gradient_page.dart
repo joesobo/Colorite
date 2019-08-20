@@ -23,8 +23,8 @@ class GradientPage extends StatefulWidget {
 class _GradientPageState extends State<GradientPage> {
   Color color1;
   Color color2;
-  String dropDownStart = 'CenterLeft';
-  String dropDownEnd = 'CenterRight';
+  String dropDownStart = 'CL';
+  String dropDownEnd = 'CR';
 
   _GradientPageState({this.color1, this.color2});
 
@@ -76,6 +76,33 @@ class _GradientPageState extends State<GradientPage> {
           ),
           //color info
           GradientInfoCard(text: 'Color 1', color: color1, parent: this),
+          //swap
+          Center(
+            child: Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(50),
+                ),
+              ),
+              child: IconButton(
+                onPressed: () {
+                  Color temp = color1;
+                  swapColors(color1, color2);
+                  setState(() {
+                    color1 = color2;
+                    color2 = temp;
+                  });
+                },
+                icon: Icon(
+                  Icons.swap_horiz,
+                  size: 20,
+                ),
+              ),
+            ),
+          ),
           GradientInfoCard(text: 'Color 2', color: color2, parent: this),
 
           //spacing
@@ -84,56 +111,105 @@ class _GradientPageState extends State<GradientPage> {
           ),
 
           //gradient direction
-          // directionDropDown('Color 1', dropDownStart, true),
-          // directionDropDown('Color 2', dropDownEnd, false)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          Column(
             children: <Widget>[
-              //bottom left to top right
-              Transform.rotate(
-                angle: -math.pi / 4,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(50),
+              //top row
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  //bottom left to top right
+                  Transform.rotate(
+                    angle: -math.pi / 4,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(50),
+                        ),
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            dropDownStart = 'BL';
+                            dropDownEnd = 'TR';
+                          });
+                        },
+                        icon: Icon(Icons.arrow_forward),
+                      ),
                     ),
                   ),
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.arrow_forward),
-                  ),
-                ),
-              ),
-              //center left to center right
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(50),
-                  ),
-                ),
-                child: IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.arrow_forward),
-                ),
-              ),
-              //top left to bottom right
-              Transform.rotate(
-                angle: math.pi / 4,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(50),
+                  //center left to center right
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(50),
+                      ),
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          dropDownStart = 'CL';
+                          dropDownEnd = 'CR';
+                        });
+                      },
+                      icon: Icon(Icons.arrow_forward),
                     ),
                   ),
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.arrow_forward),
-                  ),
-                ),
+                ],
               ),
+              //spacing
+              SizedBox(
+                height: 16,
+              ),
+              //bottom row
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  //top left to bottom right
+                  Transform.rotate(
+                    angle: math.pi / 4,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(50),
+                        ),
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            dropDownStart = 'TL';
+                            dropDownEnd = 'BR';
+                          });
+                        },
+                        icon: Icon(Icons.arrow_forward),
+                      ),
+                    ),
+                  ),
+                  //top to bottom
+                  Transform.rotate(
+                    angle: math.pi / 2,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(50),
+                        ),
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            dropDownStart = 'TC';
+                            dropDownEnd = 'BC';
+                          });
+                        },
+                        icon: Icon(Icons.arrow_forward),
+                      ),
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
         ],
@@ -152,6 +228,15 @@ class _GradientPageState extends State<GradientPage> {
     setState(() {
       color1 = tempColor1;
       color2 = tempColor2;
+    });
+  }
+
+  void swapColors(Color color1, Color color2) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    ColorHelper colorHelper = new ColorHelper();
+    setState(() {
+      prefs.setString('gradientAccent1', colorHelper.toHex(color2));
+      prefs.setString('gradientAccent2', colorHelper.toHex(color1));
     });
   }
 
@@ -180,15 +265,15 @@ class _GradientPageState extends State<GradientPage> {
                 });
               },
               items: <String>[
-                'BottomCenter',
-                'BottomLeft',
-                'BottomRight',
-                'TopCenter',
-                'TopLeft',
-                'TopRight',
-                'Center',
-                'CenterLeft',
-                'CenterRight',
+                'BC',
+                'BL',
+                'BR',
+                'TC',
+                'TL',
+                'TR',
+                'C',
+                'CL',
+                'CR',
               ].map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
@@ -203,21 +288,21 @@ class _GradientPageState extends State<GradientPage> {
   }
 
   Alignment getAlignment(String text) {
-    if (text == 'BottomCenter') {
+    if (text == 'BC') {
       return Alignment.bottomCenter;
-    } else if (text == 'BottomLeft') {
+    } else if (text == 'BL') {
       return Alignment.bottomLeft;
-    } else if (text == 'BottomRight') {
+    } else if (text == 'BR') {
       return Alignment.bottomRight;
-    } else if (text == 'TopCenter') {
+    } else if (text == 'TC') {
       return Alignment.topCenter;
-    } else if (text == 'TopLeft') {
+    } else if (text == 'TL') {
       return Alignment.topLeft;
-    } else if (text == 'TopRight') {
+    } else if (text == 'TR') {
       return Alignment.topRight;
-    } else if (text == 'Center') {
+    } else if (text == 'C') {
       return Alignment.center;
-    } else if (text == 'CenterLeft') {
+    } else if (text == 'CL') {
       return Alignment.centerLeft;
     } else {
       return Alignment.centerRight;
