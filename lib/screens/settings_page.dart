@@ -68,7 +68,7 @@ class _SettingsPageState extends State<SettingsPage> {
   //returns shared preferences accent color
   void getColor() async {
     SharedPref sharedPref = new SharedPref();
-    Color color = await sharedPref.loadColor();
+    Color color = await sharedPref.loadColor('mainAccent');
 
     setState(() {
       mainColor = color;

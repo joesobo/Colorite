@@ -1,9 +1,12 @@
 import 'package:colorite/components/drawer.dart';
 import 'package:colorite/components/popups/color_selector_popup.dart';
 import 'package:colorite/components/special_text.dart';
+import 'package:colorite/database/shared_pref.dart';
+import 'package:colorite/utilities/color_helper.dart';
 import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GradientPage extends StatefulWidget {
   //TODO: add color saving when navigating between pages
@@ -27,10 +30,8 @@ class _GradientPageState extends State<GradientPage> {
 
   @override
   void initState() {
-    if (color1 == null || color2 == null) {
-      color1 = Colors.red;
-      color2 = Colors.yellow;
-    }
+    getColors();
+
     super.initState();
   }
 
@@ -88,6 +89,18 @@ class _GradientPageState extends State<GradientPage> {
         ],
       ),
     );
+  }
+
+  //returns shared preferences accent color
+  void getColors() async {
+    SharedPref sharedPref = new SharedPref();
+    Color tempColor1 = await sharedPref.loadColor('gradientAccent1');
+    Color tempColor2 = await sharedPref.loadColor('gradientAccent2');
+
+    setState(() {
+      color1 = tempColor1;
+      color2 = tempColor2;
+    });
   }
 
   Widget directionDropDown(String label, String value, bool start) {
@@ -165,6 +178,7 @@ class GradientInfoCard extends StatelessWidget {
   final String text;
   final Color color;
   final _GradientPageState parent;
+  ColorHelper colorHelper = new ColorHelper();
 
   GradientInfoCard({this.text, this.color, this.parent});
 
@@ -189,12 +203,7 @@ class GradientInfoCard extends StatelessWidget {
                       text,
                     ),
                   ),
-                  SpecialText(
-                      text: '#' +
-                          color.value
-                              .toRadixString(16)
-                              .substring(2)
-                              .toUpperCase()),
+                  SpecialText(text: '#' + colorHelper.toHex(color)),
                 ],
               ),
             ),
@@ -235,11 +244,7 @@ class GradientInfoCard extends StatelessWidget {
 
                       if (resultColor != null) {
                         parent.setState(() {
-                          if (text == 'Color 1') {
-                            parent.color1 = resultColor;
-                          } else {
-                            parent.color2 = resultColor;
-                          }
+                          setColor(parent, resultColor, text);
                         });
                       }
                     },
@@ -303,5 +308,21 @@ class GradientInfoCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  //sets accent color for shared preferences
+  void setColor(_GradientPageState parent, Color color, String text) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    ColorHelper colorHelper = new ColorHelper();
+
+    parent.setState(() {
+      if (text == 'Color 1') {
+        parent.color1 = (color ?? accentColor);
+        prefs.setString('gradientAccent1', colorHelper.toHex(color));
+      } else {
+        parent.color2 = (color ?? accentColor);
+        prefs.setString('gradientAccent2', colorHelper.toHex(color));
+      }
+    });
   }
 }
