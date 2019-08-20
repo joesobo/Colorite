@@ -6,6 +6,7 @@ import 'package:colorite/components/popups/custom_palette_popup.dart';
 import 'package:colorite/database/database_helper.dart';
 import 'package:colorite/database/shared_pref.dart';
 import 'package:colorite/models/palette.dart';
+import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class PalettePage extends StatefulWidget {
@@ -75,7 +76,7 @@ class _PalettePageState extends State<PalettePage> {
   //returns shared preferences accent color
   void getColor() async {
     SharedPref sharedPref = new SharedPref();
-    Color color = await sharedPref.loadColor('mainAccent');
+    Color color = await sharedPref.loadColor('mainAccent', accentColor);
 
     setState(() {
       mainColor = color;

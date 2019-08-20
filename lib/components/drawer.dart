@@ -127,7 +127,7 @@ class _SideDrawerState extends State<SideDrawer> {
   //returns shared preferences accent color
   void getColor() async {
     SharedPref sharedPref = new SharedPref();
-    Color color = await sharedPref.loadColor('mainAccent');
+    Color color = await sharedPref.loadColor('mainAccent', accentColor);
 
     setState(() {
       mainColor = color;

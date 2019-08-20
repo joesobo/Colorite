@@ -1,6 +1,7 @@
 import 'package:colorite/components/drawer.dart';
 import 'package:colorite/database/shared_pref.dart';
 import 'package:colorite/utilities/color_helper.dart';
+import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -68,7 +69,7 @@ class _SettingsPageState extends State<SettingsPage> {
   //returns shared preferences accent color
   void getColor() async {
     SharedPref sharedPref = new SharedPref();
-    Color color = await sharedPref.loadColor('mainAccent');
+    Color color = await sharedPref.loadColor('mainAccent', accentColor);
 
     setState(() {
       mainColor = color;

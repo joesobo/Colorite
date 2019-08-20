@@ -94,8 +94,8 @@ class _GradientPageState extends State<GradientPage> {
   //returns shared preferences accent color
   void getColors() async {
     SharedPref sharedPref = new SharedPref();
-    Color tempColor1 = await sharedPref.loadColor('gradientAccent1');
-    Color tempColor2 = await sharedPref.loadColor('gradientAccent2');
+    Color tempColor1 = await sharedPref.loadColor('gradientAccent1', Colors.red);
+    Color tempColor2 = await sharedPref.loadColor('gradientAccent2', Colors.blue);
 
     setState(() {
       color1 = tempColor1;
