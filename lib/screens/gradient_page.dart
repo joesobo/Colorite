@@ -3,6 +3,7 @@ import 'package:colorite/components/popups/color_selector_popup.dart';
 import 'package:colorite/components/special_text.dart';
 import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 class GradientPage extends StatefulWidget {
   //TODO: add color saving when navigating between pages
@@ -26,7 +27,6 @@ class _GradientPageState extends State<GradientPage> {
 
   @override
   void initState() {
-
     if (color1 == null || color2 == null) {
       color1 = Colors.red;
       color2 = Colors.yellow;
@@ -37,9 +37,17 @@ class _GradientPageState extends State<GradientPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: GradientAppBar(
         title: Text('Gradient'),
-        backgroundColor: color1,
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          stops: [0, 1],
+          colors: [
+            color1,
+            color2,
+          ],
+        ),
         iconTheme: new IconThemeData(color: Colors.white),
       ),
       drawer: SideDrawer(color1: color1, color2: color2),
