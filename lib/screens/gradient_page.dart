@@ -10,14 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math' as math;
 
 class GradientPage extends StatefulWidget {
-  final Color color1;
-  final Color color2;
-
-  GradientPage({this.color1, this.color2});
-
   @override
   _GradientPageState createState() =>
-      _GradientPageState(color1: color1, color2: color2);
+      _GradientPageState();
 }
 
 class _GradientPageState extends State<GradientPage> {
@@ -51,8 +46,9 @@ class _GradientPageState extends State<GradientPage> {
         ),
         iconTheme: new IconThemeData(color: Colors.white),
       ),
-      drawer: SideDrawer(color1: color1, color2: color2),
-      body: Column(
+      drawer: SideDrawer(),
+      body: (color1 != null || color2 != null) ?
+      Column(
         children: <Widget>[
           //color display
           Container(
@@ -74,20 +70,19 @@ class _GradientPageState extends State<GradientPage> {
               ),
             ),
           ),
-          //color info
+          //color info 1
           GradientInfoCard(text: 'Color 1', color: color1, parent: this),
+
           //swap
           Center(
             child: Container(
+              margin: EdgeInsets.symmetric(vertical: 4),
               width: 40,
               height: 40,
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(50),
-                ),
-              ),
-              child: IconButton(
+              child: FloatingActionButton(
+                heroTag: "btn1",
+                elevation: 5,
+                backgroundColor: accentColor,
                 onPressed: () {
                   Color temp = color1;
                   swapColors(color1, color2);
@@ -96,124 +91,150 @@ class _GradientPageState extends State<GradientPage> {
                     color2 = temp;
                   });
                 },
-                icon: Icon(
+                child: Icon(
                   Icons.swap_horiz,
+                  color: Colors.white,
                   size: 20,
                 ),
               ),
             ),
           ),
-          GradientInfoCard(text: 'Color 2', color: color2, parent: this),
 
-          //spacing
-          SizedBox(
-            height: 8,
-          ),
+          //color info 2
+          GradientInfoCard(text: 'Color 2', color: color2, parent: this),
 
           //gradient direction
           Column(
             children: <Widget>[
+              SizedBox(
+                height: 8,
+              ),
+
               //top row
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  //bottom left to top right
-                  Transform.rotate(
-                    angle: -math.pi / 4,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(50),
+              Card(
+                margin: EdgeInsets.symmetric(horizontal: 100),
+                elevation: 5,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      //bottom left to top right
+                      Transform.rotate(
+                        angle: -math.pi / 4,
+                        child: FloatingActionButton(
+                          heroTag: "btn2",
+                          elevation: 5,
+                          backgroundColor: accentColor,
+                          onPressed: () {
+                            swapColors(color1, color2);
+                            setState(() {
+                              dropDownStart = 'BL';
+                              dropDownEnd = 'TR';
+                            });
+                          },
+                          child: Icon(
+                            Icons.arrow_forward,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                      child: IconButton(
+                      //center left to center right
+                      FloatingActionButton(
+                        heroTag: "btn3",
+                        elevation: 5,
+                        backgroundColor: accentColor,
                         onPressed: () {
+                          swapColors(color1, color2);
                           setState(() {
-                            dropDownStart = 'BL';
-                            dropDownEnd = 'TR';
+                            dropDownStart = 'CL';
+                            dropDownEnd = 'CR';
                           });
                         },
-                        icon: Icon(Icons.arrow_forward),
+                        child: Icon(
+                          Icons.arrow_forward,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                  //center left to center right
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(50),
-                      ),
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          dropDownStart = 'CL';
-                          dropDownEnd = 'CR';
-                        });
-                      },
-                      icon: Icon(Icons.arrow_forward),
-                    ),
-                  ),
-                ],
+                ),
               ),
+
               //spacing
               SizedBox(
-                height: 16,
+                height: 12,
               ),
+
               //bottom row
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  //top left to bottom right
-                  Transform.rotate(
-                    angle: math.pi / 4,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(50),
+              Card(
+                margin: EdgeInsets.symmetric(horizontal: 100),
+                elevation: 5,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      //top left to bottom right
+                      Transform.rotate(
+                        angle: math.pi / 4,
+                        child: FloatingActionButton(
+                          heroTag: "btn4",
+                          elevation: 5,
+                          backgroundColor: accentColor,
+                          onPressed: () {
+                            swapColors(color1, color2);
+                            setState(() {
+                              dropDownStart = 'TL';
+                              dropDownEnd = 'BR';
+                            });
+                          },
+                          child: Icon(
+                            Icons.arrow_forward,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                      child: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            dropDownStart = 'TL';
-                            dropDownEnd = 'BR';
-                          });
-                        },
-                        icon: Icon(Icons.arrow_forward),
-                      ),
-                    ),
-                  ),
-                  //top to bottom
-                  Transform.rotate(
-                    angle: math.pi / 2,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(50),
+                      //top to bottom
+                      Transform.rotate(
+                        angle: math.pi / 2,
+                        child: FloatingActionButton(
+                          heroTag: "btn5",
+                          elevation: 5,
+                          backgroundColor: accentColor,
+                          onPressed: () {
+                            swapColors(color1, color2);
+                            setState(() {
+                              dropDownStart = 'TC';
+                              dropDownEnd = 'BC';
+                            });
+                          },
+                          child: Icon(
+                            Icons.arrow_forward,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                      child: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            dropDownStart = 'TC';
-                            dropDownEnd = 'BC';
-                          });
-                        },
-                        icon: Icon(Icons.arrow_forward),
-                      ),
-                    ),
+                    ],
                   ),
-                ],
-              )
+                ),
+              ),
+
+              //helper text
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 16, 0, 8),
+                child: Text(
+                  'Tap button to change direction of gradient',
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
             ],
           ),
         ],
-      ),
+      )
+      : Container()
     );
   }
 
@@ -231,6 +252,7 @@ class _GradientPageState extends State<GradientPage> {
     });
   }
 
+  //swaps colors in shared preferences database
   void swapColors(Color color1, Color color2) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     ColorHelper colorHelper = new ColorHelper();

@@ -7,22 +7,13 @@ import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class SideDrawer extends StatefulWidget {
-  final Color color1;
-  final Color color2;
-
-  SideDrawer({this.color1, this.color2});
-
   @override
   _SideDrawerState createState() =>
-      _SideDrawerState(color1: color1, color2: color2);
+      _SideDrawerState();
 }
 
 class _SideDrawerState extends State<SideDrawer> {
-  Color color1;
-  Color color2;
   Color mainColor;
-
-  _SideDrawerState({this.color1, this.color2});
 
   @override
   void initState() {
@@ -93,9 +84,7 @@ class _SideDrawerState extends State<SideDrawer> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => GradientPage(
-                            color1: color1,
-                            color2: color2,),
+                        builder: (context) => GradientPage(),
                       ),
                     );
                   },

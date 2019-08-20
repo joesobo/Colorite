@@ -128,9 +128,8 @@ class _ColorSelectorPopupState extends State<ColorSelectorPopup> {
           mode == Mode.rgb ? rgbSliders() : hsvSliders(),
           //submit button
           RaisedButton(
-            color: Colors.blueGrey,
+            color: accentColor,
             elevation: 5,
-            splashColor: Colors.blueGrey[300],
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
             ),

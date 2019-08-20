@@ -35,7 +35,8 @@ class _HomePageState extends State<HomePage> {
         iconTheme: new IconThemeData(color: Colors.white),
       ),
       drawer: SideDrawer(),
-      body: ListView(
+      body: mainColor != null ?
+      ListView(
         children: <Widget>[
           //color viewer
           Container(
@@ -100,7 +101,8 @@ class _HomePageState extends State<HomePage> {
                 'A group of colors that have the same hue but different value and saturation',
           ),
         ],
-      ),
+      )
+      : Container(),
     );
   }
 
