@@ -16,10 +16,16 @@ class PalettePage extends StatefulWidget {
 
 class _PalettePageState extends State<PalettePage> {
   Color mainColor;
+  final dbHelper = DatabaseHelper.instance;
+  List<Palette> paletteList;
+  List<Palette> filteredList = [];
+  String inputText = '';
 
   @override
   void initState() {
     getColor();
+
+    getPalettes();
 
     super.initState();
   }
@@ -39,13 +45,14 @@ class _PalettePageState extends State<PalettePage> {
                   Icons.add_circle_outline,
                   color: Colors.white,
                 ),
-                onPressed: () {
-                  showDialog(
+                onPressed: () async {
+                  await showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return CustomPalettePopup();
                     },
                   );
+                  getPalettes();
                 },
               ),
               IconButton(
@@ -67,7 +74,60 @@ class _PalettePageState extends State<PalettePage> {
           SizedBox(
             height: 16,
           ),
-          PaletteList(),
+
+          //list of palettes
+          Flexible(
+            child: ReorderableListView(
+              header: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32),
+                child: TextField(
+                  onChanged: (text) {
+                    setState(() {
+                      inputText = text;
+                    });
+                    filterSearchResults(text);
+                  },
+                  decoration: new InputDecoration(
+                    labelText: "Search",
+                    prefixIcon: Icon(Icons.search),
+                    border: new OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
+                      borderSide: new BorderSide(),
+                    ),
+                  ),
+                ),
+              ),
+              children: (filteredList == null || filteredList.isEmpty)
+                  ? getPaletteList(paletteList)
+                  : getPaletteList(filteredList),
+              onReorder: (int oldIndex, int newIndex) async {
+                if (newIndex > oldIndex) {
+                  newIndex -= 1;
+                }
+
+                Palette oldPalette = paletteList[oldIndex];
+                Palette newPalette = paletteList[newIndex];
+
+                int temp = oldPalette.id;
+                oldPalette.id = newPalette.id;
+                newPalette.id = temp;
+
+                Map<String, dynamic> oldMap = oldPalette.toJson();
+                Map<String, dynamic> newMap = newPalette.toJson();
+
+                var item = paletteList.removeAt(oldIndex);
+                paletteList.insert(newIndex, item);
+
+                await dbHelper.update(oldMap);
+                await dbHelper.update(newMap);
+
+                setState(() {
+                  getPalettes();
+                  getPaletteList(paletteList);
+                });
+              },
+            ),
+          )
         ],
       ),
     );
@@ -81,109 +141,6 @@ class _PalettePageState extends State<PalettePage> {
     setState(() {
       mainColor = color;
     });
-  }
-}
-
-class PaletteDisplay extends StatelessWidget {
-  final String title;
-  final List<dynamic> colorList;
-  final int id;
-  final VoidCallback onDelete;
-
-  PaletteDisplay({this.title, this.colorList, this.id, this.onDelete});
-
-  @override
-  Widget build(BuildContext context) {
-    return ColorListCard(
-      text: title,
-      colorList: convertToColorList(colorList),
-      id: id,
-      onDelete: onDelete,
-    );
-  }
-
-  //takes in a list of hexs and returns a list of colors
-  List<Color> convertToColorList(List<String> list) {
-    List<Color> colorList = [];
-    for (String hex in list) {
-      String newColor = 'FF$hex';
-      colorList.add(Color(int.parse(newColor, radix: 16)));
-    }
-    return colorList;
-  }
-}
-
-class PaletteList extends StatefulWidget {
-  @override
-  _PaletteListState createState() => _PaletteListState();
-}
-
-class _PaletteListState extends State<PaletteList> {
-  final dbHelper = DatabaseHelper.instance;
-  List<Palette> paletteList;
-  List<Palette> filteredList = [];
-  String inputText = '';
-
-  @override
-  void initState() {
-    getPalettes();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Flexible(
-      child: ReorderableListView(
-        header: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 32),
-          child: TextField(
-            onChanged: (text) {
-              setState(() {
-                inputText = text;
-              });
-              filterSearchResults(text);
-            },
-            decoration: new InputDecoration(
-              labelText: "Search",
-              prefixIcon: Icon(Icons.search),
-              border: new OutlineInputBorder(
-                borderRadius: new BorderRadius.circular(10.0),
-                borderSide: new BorderSide(),
-              ),
-            ),
-          ),
-        ),
-        children: (filteredList == null || filteredList.isEmpty)
-            ? getPaletteList(paletteList)
-            : getPaletteList(filteredList),
-        onReorder: (int oldIndex, int newIndex) async {
-          if (newIndex > oldIndex) {
-            newIndex -= 1;
-          }
-
-          Palette oldPalette = paletteList[oldIndex];
-          Palette newPalette = paletteList[newIndex];
-
-          int temp = oldPalette.id;
-          oldPalette.id = newPalette.id;
-          newPalette.id = temp;
-
-          Map<String, dynamic> oldMap = oldPalette.toJson();
-          Map<String, dynamic> newMap = newPalette.toJson();
-
-          var item = paletteList.removeAt(oldIndex);
-          paletteList.insert(newIndex, item);
-
-          await dbHelper.update(oldMap);
-          await dbHelper.update(newMap);
-
-          setState(() {
-            getPalettes();
-            getPaletteList(paletteList);
-          });
-        },
-      ),
-    );
   }
 
   //filters paletteList by input string
@@ -249,5 +206,34 @@ class _PaletteListState extends State<PaletteList> {
       stringList.add(item.toString());
     }
     return stringList;
+  }
+}
+
+class PaletteDisplay extends StatelessWidget {
+  final String title;
+  final List<dynamic> colorList;
+  final int id;
+  final VoidCallback onDelete;
+
+  PaletteDisplay({this.title, this.colorList, this.id, this.onDelete});
+
+  @override
+  Widget build(BuildContext context) {
+    return ColorListCard(
+      text: title,
+      colorList: convertToColorList(colorList),
+      id: id,
+      onDelete: onDelete,
+    );
+  }
+
+  //takes in a list of hexs and returns a list of colors
+  List<Color> convertToColorList(List<String> list) {
+    List<Color> colorList = [];
+    for (String hex in list) {
+      String newColor = 'FF$hex';
+      colorList.add(Color(int.parse(newColor, radix: 16)));
+    }
+    return colorList;
   }
 }

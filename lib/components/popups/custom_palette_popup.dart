@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:colorite/components/popups/color_selector_popup.dart';
 import 'package:colorite/database/database_helper.dart';
 import 'package:colorite/models/palette.dart';
+import 'package:colorite/utilities/color_helper.dart';
 import 'package:flutter/material.dart';
 
 class CustomPalettePopup extends StatefulWidget {
@@ -18,6 +19,7 @@ class _CustomPalettePopupState extends State<CustomPalettePopup> {
     Colors.grey[400],
     Colors.grey[500],
   ];
+  ColorHelper colorHelper = new ColorHelper();
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +65,7 @@ class _CustomPalettePopupState extends State<CustomPalettePopup> {
                   //convert color list to hex list
                   List<String> myColorList = [];
                   for (Color color in colorList) {
-                    myColorList.add(color.value
-                        .toRadixString(16)
-                        .substring(2)
-                        .toUpperCase());
+                    myColorList.add(colorHelper.toHex(color));
                   }
 
                   //create new palette
