@@ -7,6 +7,7 @@ import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:math' as math;
 
 class GradientPage extends StatefulWidget {
   final Color color1;
@@ -83,8 +84,58 @@ class _GradientPageState extends State<GradientPage> {
           ),
 
           //gradient direction
-          directionDropDown('Color 1', dropDownStart, true),
-          directionDropDown('Color 2', dropDownEnd, false)
+          // directionDropDown('Color 1', dropDownStart, true),
+          // directionDropDown('Color 2', dropDownEnd, false)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              //bottom left to top right
+              Transform.rotate(
+                angle: -math.pi / 4,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(50),
+                    ),
+                  ),
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.arrow_forward),
+                  ),
+                ),
+              ),
+              //center left to center right
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(50),
+                  ),
+                ),
+                child: IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.arrow_forward),
+                ),
+              ),
+              //top left to bottom right
+              Transform.rotate(
+                angle: math.pi / 4,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(50),
+                    ),
+                  ),
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.arrow_forward),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -93,8 +144,10 @@ class _GradientPageState extends State<GradientPage> {
   //returns shared preferences accent color
   void getColors() async {
     SharedPref sharedPref = new SharedPref();
-    Color tempColor1 = await sharedPref.loadColor('gradientAccent1', Colors.red);
-    Color tempColor2 = await sharedPref.loadColor('gradientAccent2', Colors.blue);
+    Color tempColor1 =
+        await sharedPref.loadColor('gradientAccent1', Colors.red);
+    Color tempColor2 =
+        await sharedPref.loadColor('gradientAccent2', Colors.blue);
 
     setState(() {
       color1 = tempColor1;
