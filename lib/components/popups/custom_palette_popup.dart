@@ -1,10 +1,16 @@
 import 'dart:convert';
 
+import 'package:colorite/components/popups/color_selector_popup.dart';
 import 'package:colorite/database/database_helper.dart';
 import 'package:colorite/models/palette.dart';
 import 'package:flutter/material.dart';
 
-class CustomPalettePopup extends StatelessWidget {
+class CustomPalettePopup extends StatefulWidget {
+  @override
+  _CustomPalettePopupState createState() => _CustomPalettePopupState();
+}
+
+class _CustomPalettePopupState extends State<CustomPalettePopup> {
   List<Color> colorList = [
     Colors.grey[100],
     Colors.grey[200],
@@ -27,27 +33,31 @@ class CustomPalettePopup extends StatelessWidget {
         child: Container(
           height: 225,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Row(
                 children: createColorButton(colorList, context),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: TextField(
-                  textCapitalization: TextCapitalization.sentences,
-                  onChanged: (text) {
-                    value = text;
-                  },
-                  decoration: new InputDecoration(
-                    labelText: "Enter Name",
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0),
-                      borderSide: new BorderSide(),
-                    ),
+              Text('Click on a color to change it',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 14,
+                  )),
+              TextField(
+                textCapitalization: TextCapitalization.sentences,
+                onChanged: (text) {
+                  value = text;
+                },
+                decoration: new InputDecoration(
+                  labelText: "Enter Name",
+                  border: new OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(10.0),
+                    borderSide: new BorderSide(),
                   ),
                 ),
               ),
               RaisedButton(
+                elevation: 5,
                 child: Text('Save'),
                 onPressed: () async {
                   //convert color list to hex list
@@ -62,9 +72,9 @@ class CustomPalettePopup extends StatelessWidget {
                   //create new palette
                   Palette p = new Palette(
                       name: value, myColorList: jsonEncode(myColorList));
-                  
+
                   Map<String, dynamic> row = p.toJson();
-                  
+
                   //insert new row to database
                   final id = await dbHelper.insert(row);
                   print('inserted row id: $id');
@@ -87,11 +97,11 @@ class CustomPalettePopup extends StatelessWidget {
   //decides which button based on order
   List<Widget> createColorButton(List<Color> colorList, BuildContext context) {
     List<Widget> widgetList = [];
-    int count = 0;
+    int index = 0;
 
     for (Color color in colorList) {
       //first color
-      if (colorList[0] == color && count == 0) {
+      if (colorList[0] == color && index == 0) {
         widgetList.add(
           radiusButton(
             color,
@@ -100,12 +110,13 @@ class CustomPalettePopup extends StatelessWidget {
               bottomLeft: Radius.circular(5),
             ),
             context,
+            index,
           ),
         );
       }
       //last color
       else if (colorList[colorList.length - 1] == color &&
-          count == colorList.length - 1) {
+          index == colorList.length - 1) {
         widgetList.add(
           radiusButton(
             color,
@@ -114,6 +125,7 @@ class CustomPalettePopup extends StatelessWidget {
               bottomRight: Radius.circular(5),
             ),
             context,
+            index,
           ),
         );
         // other colors
@@ -123,29 +135,37 @@ class CustomPalettePopup extends StatelessWidget {
             color,
             null,
             context,
+            index,
           ),
         );
       }
-      count++;
+      index++;
     }
     return widgetList;
   }
 
   //created button with changable radius
-  Widget radiusButton(Color color, BorderRadius border, BuildContext context) {
+  Widget radiusButton(
+      Color color, BorderRadius border, BuildContext context, int index) {
     return Expanded(
       child: Material(
         elevation: 3,
         color: Colors.transparent,
         shadowColor: Colors.grey[800],
         child: FlatButton(
-          onPressed: () {
-            // showDialog(
-            //   context: context,
-            //   builder: (BuildContext context) {
-            //     return ColorInfoPopup(color: color);
-            //   },
-            // );
+          onPressed: () async {
+            final resultColor = await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return ColorSelectorPopup(mainColor: color);
+              },
+            );
+
+            if (resultColor != null) {
+              setState(() {
+                colorList[index] = resultColor;
+              });
+            }
           },
           padding: EdgeInsets.all(0),
           child: Container(

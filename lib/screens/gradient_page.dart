@@ -9,7 +9,6 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GradientPage extends StatefulWidget {
-  //TODO: add color saving when navigating between pages
   final Color color1;
   final Color color2;
 
