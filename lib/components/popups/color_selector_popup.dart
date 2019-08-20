@@ -126,20 +126,45 @@ class _ColorSelectorPopupState extends State<ColorSelectorPopup> {
           ),
           //color selection sliders
           mode == Mode.rgb ? rgbSliders() : hsvSliders(),
-          //submit button
-          RaisedButton(
-            color: accentColor,
-            elevation: 5,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Text(
-              'Save',
-              style: defaultText,
-            ),
-            onPressed: () {
-              Navigator.pop(context, mainColor);
-            },
+          //save and close
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                width: 100,
+                child: RaisedButton(
+                  color: Colors.grey,
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text(
+                    'Cancel',
+                    style: defaultText,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+              Container(
+                width: 100,
+                child: RaisedButton(
+                  color: accentColor,
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text(
+                    'Save',
+                    style: defaultText,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context, mainColor);
+                  },
+                ),
+              ),
+            ],
           ),
         ],
       ),

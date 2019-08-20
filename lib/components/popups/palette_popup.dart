@@ -1,3 +1,4 @@
+import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class PalettePopup extends StatelessWidget {
@@ -32,15 +33,46 @@ class PalettePopup extends StatelessWidget {
                 ),
               ),
             ),
-            RaisedButton(
-              onPressed: (){
-                //print(value);
-                Navigator.pop(context, value);
-              },
-              color: Colors.blueGrey[600],
-              shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(5.0)),
-              child: Text('Save'),
-            ),
+            //save and cancel
+            Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                width: 100,
+                child: RaisedButton(
+                  color: Colors.grey,
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text(
+                    'Cancel',
+                    style: defaultText,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+              Container(
+                width: 100,
+                child: RaisedButton(
+                  color: accentColor,
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text(
+                    'Save',
+                    style: defaultText,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context, value);
+                  },
+                ),
+              ),
+            ],
+          ),
           ],
         ),
       ),

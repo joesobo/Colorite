@@ -1,5 +1,6 @@
 import 'package:colorite/components/color_indicator.dart';
 import 'package:colorite/components/special_text.dart';
+import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class ColorInfoPopup extends StatelessWidget {
@@ -44,6 +45,24 @@ class ColorInfoPopup extends StatelessWidget {
                   SpecialText(text: (HSVColor.fromColor(color).saturation * 100).toStringAsFixed(0)),
                   SpecialText(text: (HSVColor.fromColor(color).value * 100).toStringAsFixed(0)),
                 ],
+              ),
+              //exit 
+              Container(
+                width: 100,
+                child: RaisedButton(
+                  color: accentColor,
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text(
+                    'Close',
+                    style: defaultText,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
               ),
             ],
           ),
