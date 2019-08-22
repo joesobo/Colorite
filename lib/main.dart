@@ -1,14 +1,21 @@
+import 'package:colorite/components/theme/custom_theme.dart';
 import 'package:colorite/screens/home_page.dart';
+import 'package:colorite/utilities/my_themes.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(
+  CustomTheme(
+    initialThemeKey: MyThemeKeys.Light,
+    child: MyApp(),
+  )
+);
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData.dark(),
+      theme: CustomTheme.of(context),
       home: HomePage(),
     );
   }

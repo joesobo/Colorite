@@ -1,7 +1,8 @@
 import 'package:colorite/components/drawer.dart';
+import 'package:colorite/components/theme/custom_theme.dart';
 import 'package:colorite/database/shared_pref.dart';
-import 'package:colorite/utilities/color_helper.dart';
 import 'package:colorite/utilities/constants.dart';
+import 'package:colorite/utilities/my_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -108,39 +109,61 @@ class _SettingsPageState extends State<SettingsPage> {
                   )
                 ],
               ),
-            ),         
-            //toggle dark mode
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Row(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Text(
-                      'Toggle Dark Mode: ',
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                  Transform.scale(
-                    scale: 1.5,
-                    child: Switch(
-                      value: isSwitched,
-                      onChanged: (value) {},
-                      activeTrackColor: ColorHelper().getLightShade(lightSwitch),
-                      activeColor: lightSwitch,
-                      inactiveTrackColor: ColorHelper().getLightShade(darkSwitch),
-                      inactiveThumbColor: darkSwitch,
-                    ),
-                  ),
-                ],
-              ),
             ),
+            //toggle dark mode
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Container(
+                  width: 80,
+                  height: 40,
+                  child: FloatingActionButton(
+                    heroTag: 'Btn3',
+                    onPressed: () {
+                      _changeTheme(context, MyThemeKeys.Dark);
+                      print('dark');
+                    },
+                    elevation: 5,
+                    backgroundColor: accentColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Text(
+                      'Dark',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 80,
+                  height: 40,
+                  child: FloatingActionButton(
+                    heroTag: 'Btn4',
+                    onPressed: () {
+                      _changeTheme(context, MyThemeKeys.Light);
+                      print('light');
+                    },
+                    elevation: 5,
+                    backgroundColor: accentColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Text(
+                      'Light',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                )
+              ],
+            )
           ],
         ),
       ),
     );
+  }
+
+  void _changeTheme(BuildContext buildContext, MyThemeKeys key) {
+    CustomTheme.instanceOf(buildContext).changeTheme(key);
   }
 
   //returns shared preferences accent color
