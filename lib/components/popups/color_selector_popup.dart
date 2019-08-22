@@ -140,7 +140,10 @@ class _ColorSelectorPopupState extends State<ColorSelectorPopup> {
                   ),
                   child: Text(
                     'Cancel',
-                    style: defaultText,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
                   ),
                   onPressed: () {
                     Navigator.pop(context);
@@ -157,7 +160,10 @@ class _ColorSelectorPopupState extends State<ColorSelectorPopup> {
                   ),
                   child: Text(
                     'Save',
-                    style: defaultText,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
                   ),
                   onPressed: () {
                     Navigator.pop(context, mainColor);
@@ -298,7 +304,7 @@ class ModeSelector extends StatelessWidget {
   FlatButton filled(String text, Mode mode) {
     return FlatButton(
       color: Colors.grey,
-      child: Text(text),
+      child: Text(text, style: TextStyle(color: Colors.white),),
       onPressed: () {},
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -349,7 +355,7 @@ class ColorSlider extends StatelessWidget {
             data: SliderTheme.of(context).copyWith(
               thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10),
               overlayShape: RoundSliderOverlayShape(overlayRadius: 20),
-              thumbColor: Colors.white,
+              thumbColor: Theme.of(context).cursorColor,
               activeTrackColor: activeColor,
               overlayColor: overlayColor,
             ),

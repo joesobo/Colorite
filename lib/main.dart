@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(
   CustomTheme(
-    initialThemeKey: MyThemeKeys.Light,
+    initialThemeKey: MyThemeKeys.Dark,
     child: MyApp(),
   )
 );

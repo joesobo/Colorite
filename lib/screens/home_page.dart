@@ -179,7 +179,7 @@ class ColorInfoCard extends StatelessWidget {
                   bottom: 4,
                   //color editing button
                   child: IconButton(
-                    icon: Icon(Icons.edit),
+                    icon: Icon(Icons.edit, color: Colors.white,),
                     onPressed: () async {
                       final resultColor = await showDialog(
                         context: context,
