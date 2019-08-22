@@ -1,3 +1,4 @@
+import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class PaletteInfoPopup extends StatelessWidget {
@@ -14,7 +15,33 @@ class PaletteInfoPopup extends StatelessWidget {
         'Palette Harmony Info',
         textAlign: TextAlign.center,
       ),
-      content: Text(text),
+      content: Container(
+        height: 120,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(text),
+            //exit
+            Container(
+              width: 100,
+              child: RaisedButton(
+                color: accentColor,
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Text(
+                  'Close',
+                  style: defaultText,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

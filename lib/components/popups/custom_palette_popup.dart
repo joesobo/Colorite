@@ -4,6 +4,7 @@ import 'package:colorite/components/popups/color_selector_popup.dart';
 import 'package:colorite/database/database_helper.dart';
 import 'package:colorite/models/palette.dart';
 import 'package:colorite/utilities/color_helper.dart';
+import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class CustomPalettePopup extends StatefulWidget {
@@ -58,33 +59,59 @@ class _CustomPalettePopupState extends State<CustomPalettePopup> {
                   ),
                 ),
               ),
-              RaisedButton(
-                elevation: 5,
-                child: Text('Save'),
-                onPressed: () async {
-                  //convert color list to hex list
-                  List<String> myColorList = [];
-                  for (Color color in colorList) {
-                    myColorList.add(colorHelper.toHex(color));
-                  }
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  //exit
+                  Container(
+                    width: 100,
+                    child: RaisedButton(
+                      color: accentColor,
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Text(
+                        'Close',
+                        style: defaultText,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                  Container(
+                    width: 100,
+                    child: RaisedButton(
+                      elevation: 5,
+                      child: Text('Save'),
+                      onPressed: () async {
+                        //convert color list to hex list
+                        List<String> myColorList = [];
+                        for (Color color in colorList) {
+                          myColorList.add(colorHelper.toHex(color));
+                        }
 
-                  //create new palette
-                  Palette p = new Palette(
-                      name: value, myColorList: jsonEncode(myColorList));
+                        //create new palette
+                        Palette p = new Palette(
+                            name: value, myColorList: jsonEncode(myColorList));
 
-                  Map<String, dynamic> row = p.toJson();
+                        Map<String, dynamic> row = p.toJson();
 
-                  //insert new row to database
-                  final id = await dbHelper.insert(row);
-                  print('inserted row id: $id');
-                  print('inserted row name: ${p.name}');
-                  print('inserted row list: ${p.myColorList}');
-                  Navigator.pop(context);
-                },
-                color: Colors.blueGrey[600],
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(5.0),
-                ),
+                        //insert new row to database
+                        final id = await dbHelper.insert(row);
+                        print('inserted row id: $id');
+                        print('inserted row name: ${p.name}');
+                        print('inserted row list: ${p.myColorList}');
+                        Navigator.pop(context);
+                      },
+                      color: Colors.blueGrey[600],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(5.0),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

@@ -77,26 +77,27 @@ class ColorListCard extends StatelessWidget {
                                       },
                                     );
 
-                                    //convert color list to list of strings
-                                    List<String> myColorList = [];
-                                    for (Color color in colorList) {
-                                      myColorList.add(color.value
-                                          .toRadixString(16)
-                                          .substring(2)
-                                          .toUpperCase());
-                                    }
+                                    if(resultName != null){
+                                      //convert color list to list of strings
+                                      List<String> myColorList = [];
+                                      for (Color color in colorList) {
+                                        myColorList.add(color.value
+                                            .toRadixString(16)
+                                            .substring(2)
+                                            .toUpperCase());
+                                      }
 
-                                    //create new palette
-                                    Palette palette = new Palette(
-                                        name: resultName,
-                                        myColorList: jsonEncode(myColorList));
-                                    //convert to json and insert into database
-                                    Map<String, dynamic> row = palette.toJson();
-                                    final id = await dbHelper.insert(row);
-                                    print('inserted row id: $id');
-                                    print('inserted row name: ${palette.name}');
-                                    print(
-                                        'inserted row list: ${palette.myColorList}');
+                                      //create new palette
+                                      Palette palette = new Palette(
+                                          name: resultName,
+                                          myColorList: jsonEncode(myColorList));
+                                      //convert to json and insert into database
+                                      Map<String, dynamic> row = palette.toJson();
+                                      final id = await dbHelper.insert(row);
+                                      print('inserted row id: $id');
+                                      print('inserted row name: ${palette.name}');
+                                      print('inserted row list: ${palette.myColorList}');
+                                    }
                                   },
                                   icon: Icon(
                                     Icons.add_circle_outline,
