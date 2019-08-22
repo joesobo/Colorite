@@ -36,98 +36,106 @@ class _SettingsPageState extends State<SettingsPage> {
       body: Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             //main accent color
-            Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Text(
-                    'Clear Main Accent Color: ',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 80,
-                  height: 40,
-                  child: FloatingActionButton(
-                    heroTag: 'Btn1',
-                    onPressed: () {
-                      deleteMainColor();
-                    },
-                    elevation: 5,
-                    backgroundColor: accentColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: Text(
-                      'Clear',
-                      style: TextStyle(color: Colors.white),
+                      'Clear Main Accent Color: ',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
                     ),
                   ),
-                )
-              ],
+                  Container(
+                    width: 80,
+                    height: 40,
+                    child: FloatingActionButton(
+                      heroTag: 'Btn1',
+                      onPressed: () {
+                        deleteMainColor();
+                      },
+                      elevation: 5,
+                      backgroundColor: accentColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Text(
+                        'Clear',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
             //gradient accent color
-            Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Text(
-                    'Clear Gradient Accent Colors: ',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 80,
-                  height: 40,
-                  child: FloatingActionButton(
-                    heroTag: 'Btn2',
-                    onPressed: () {
-                      deleteGradientColors();
-                    },
-                    elevation: 5,
-                    backgroundColor: accentColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: Text(
-                      'Clear',
-                      style: TextStyle(color: Colors.white),
+                      'Clear Gradient Accent Colors: ',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
                     ),
                   ),
-                )
-              ],
+                  Container(
+                    width: 80,
+                    height: 40,
+                    child: FloatingActionButton(
+                      heroTag: 'Btn2',
+                      onPressed: () {
+                        deleteGradientColors();
+                      },
+                      elevation: 5,
+                      backgroundColor: accentColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Text(
+                        'Clear',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),         
             //toggle dark mode
-            Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Text(
-                    'Toggle Dark Mode: ',
-                    style: TextStyle(
-                      fontSize: 18,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Text(
+                      'Toggle Dark Mode: ',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
                     ),
                   ),
-                ),
-                Transform.scale(
-                  scale: 1.5,
-                  child: Switch(
-                    value: isSwitched,
-                    onChanged: (value) {},
-                    activeTrackColor: ColorHelper().getLightShade(lightSwitch),
-                    activeColor: lightSwitch,
-                    inactiveTrackColor: ColorHelper().getLightShade(darkSwitch),
-                    inactiveThumbColor: darkSwitch,
+                  Transform.scale(
+                    scale: 1.5,
+                    child: Switch(
+                      value: isSwitched,
+                      onChanged: (value) {},
+                      activeTrackColor: ColorHelper().getLightShade(lightSwitch),
+                      activeColor: lightSwitch,
+                      inactiveTrackColor: ColorHelper().getLightShade(darkSwitch),
+                      inactiveThumbColor: darkSwitch,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

@@ -36,7 +36,6 @@ class _CustomPalettePopupState extends State<CustomPalettePopup> {
         child: Container(
           height: 225,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Row(
                 children: createColorButton(colorList, context),

@@ -53,7 +53,7 @@ class _GradientPageState extends State<GradientPage> {
           //color display
           Container(
             margin: EdgeInsets.fromLTRB(30, 32, 30, 4),
-            height: 104,
+            height: 160,
             width: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(
@@ -107,12 +107,12 @@ class _GradientPageState extends State<GradientPage> {
           Column(
             children: <Widget>[
               SizedBox(
-                height: 8,
+                height: 24,
               ),
 
-              //top row
+              //row
               Card(
-                margin: EdgeInsets.symmetric(horizontal: 100),
+                margin: EdgeInsets.symmetric(horizontal: 30),
                 elevation: 5,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -156,25 +156,6 @@ class _GradientPageState extends State<GradientPage> {
                           color: Colors.white,
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-
-              //spacing
-              SizedBox(
-                height: 12,
-              ),
-
-              //bottom row
-              Card(
-                margin: EdgeInsets.symmetric(horizontal: 100),
-                elevation: 5,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
                       //top left to bottom right
                       Transform.rotate(
                         angle: math.pi / 4,
