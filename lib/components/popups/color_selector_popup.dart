@@ -58,121 +58,123 @@ class _ColorSelectorPopupState extends State<ColorSelectorPopup> {
         'Edit your main color',
         textAlign: TextAlign.center,
       ),
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          //hex text, color indicator, and mode selector
-          Column(
-            children: <Widget>[
-              //hex text
-              Row(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: Text('#'),
-                  ),
-                  Expanded(
-                    child: TextField(
-                      controller: hexController,
-                      textCapitalization: TextCapitalization.characters,
-                      decoration: InputDecoration(
-                        labelText: 'Hex:',
-                        labelStyle: TextStyle(
-                          color: Colors.blueGrey[200],
+      content: Container(
+        height: 520,
+        width: 120,
+        child: ListView(
+          children: <Widget>[
+            //hex text, color indicator, and mode selector
+            Column(
+              children: <Widget>[
+                //hex text
+                Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: Text('#'),
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: hexController,
+                        textCapitalization: TextCapitalization.characters,
+                        decoration: InputDecoration(
+                          labelText: 'Hex:',
+                          labelStyle: TextStyle(
+                            color: Colors.blueGrey[200],
+                          ),
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
                         ),
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
+                        style: TextStyle(),
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(6),
+                        ],
+                        onChanged: (value) {
+                          if (hexController.text.length == 6) {
+                            String hexText = 'FF' + hexController.text;
+                            int hexInt = int.parse(hexText, radix: 16);
+                            mainColor = Color(hexInt);
+                            setState(() {
+                              if (mode == Mode.rgb) {
+                                r = mainColor.red;
+                                g = mainColor.green;
+                                b = mainColor.blue;
+                              } else {
+                                h = HSVColor.fromColor(mainColor).hue.toInt();
+                                s = (HSVColor.fromColor(mainColor).saturation *
+                                        100)
+                                    .toInt();
+                                v = (HSVColor.fromColor(mainColor).value * 100)
+                                    .toInt();
+                              }
+                            });
+                          }
+                        },
                       ),
-                      style: TextStyle(),
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(6),
-                      ],
-                      onChanged: (value) {
-                        if (hexController.text.length == 6) {
-                          String hexText = 'FF' + hexController.text;
-                          int hexInt = int.parse(hexText, radix: 16);
-                          mainColor = Color(hexInt);
-                          setState(() {
-                            if (mode == Mode.rgb) {
-                              r = mainColor.red;
-                              g = mainColor.green;
-                              b = mainColor.blue;
-                            } else {
-                              h = HSVColor.fromColor(mainColor).hue.toInt();
-                              s = (HSVColor.fromColor(mainColor).saturation *
-                                      100)
-                                  .toInt();
-                              v = (HSVColor.fromColor(mainColor).value * 100)
-                                  .toInt();
-                            }
-                          });
-                        }
-                      },
                     ),
-                  ),
-                ],
-              ),
-              //color indicator
-              mode == Mode.rgb
-                  ? ColorIndicator(color: Color.fromRGBO(r, g, b, 1))
-                  : ColorIndicator(
-                      color:
-                          HSVColor.fromAHSV(1, h.toDouble(), s / 100, v / 100)
-                              .toColor()),
-              //mode selector
-              ModeSelector(parent: this),
-            ],
-          ),
-          //color selection sliders
-          mode == Mode.rgb ? rgbSliders() : hsvSliders(),
-          //save and close
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                width: 100,
-                child: RaisedButton(
-                  color: Colors.grey,
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Text(
-                    'Cancel',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                  ],
                 ),
-              ),
-              Container(
-                width: 100,
-                child: RaisedButton(
-                  color: accentColor,
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Text(
-                    'Save',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
+                //color indicator
+                mode == Mode.rgb
+                    ? ColorIndicator(color: Color.fromRGBO(r, g, b, 1))
+                    : ColorIndicator(
+                        color:
+                            HSVColor.fromAHSV(1, h.toDouble(), s / 100, v / 100)
+                                .toColor()),
+                //mode selector
+                ModeSelector(parent: this),
+              ],
+            ),
+            //color selection sliders
+            mode == Mode.rgb ? rgbSliders() : hsvSliders(),
+            //save and close
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  width: 100,
+                  child: RaisedButton(
+                    color: Colors.grey,
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
                     ),
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
-                  onPressed: () {
-                    Navigator.pop(context, mainColor);
-                  },
                 ),
-              ),
-            ],
-          ),
-        ],
+                Container(
+                  width: 100,
+                  child: RaisedButton(
+                    color: accentColor,
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Text(
+                      'Save',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context, mainColor);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
