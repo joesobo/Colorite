@@ -128,6 +128,8 @@ class _PalettePageState extends State<PalettePage> {
 
                 if(tempList[0].priority != -1){
                   tempList.sort((a,b) => a.priority.compareTo(b.priority));
+                }else{
+                  tempList.sort((a, b) => b.id.compareTo(a.id));
                 }
 
                 final item = tempList.removeAt(oldIndex);

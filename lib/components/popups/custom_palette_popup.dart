@@ -21,6 +21,8 @@ class _CustomPalettePopupState extends State<CustomPalettePopup> {
     Colors.grey[500],
   ];
   ColorHelper colorHelper = new ColorHelper();
+  final dbHelper = DatabaseHelper.instance;
+  List<Palette> paletteList;
 
   @override
   Widget build(BuildContext context) {
@@ -92,9 +94,26 @@ class _CustomPalettePopupState extends State<CustomPalettePopup> {
                           myColorList.add(colorHelper.toHex(color));
                         }
 
+                        await getPalettes();
+
+                        int priorityNum;
+                        if(paletteList[0].priority == -1){
+                          priorityNum = -1;
+                        }else{
+                          priorityNum = 0;
+
+                          for(int i = 0; i < paletteList.length; i++){
+                            paletteList[i].priority++;
+                            dbHelper.update(paletteList[i].toJson());
+                          }
+                        }
+
                         //create new palette
                         Palette p = new Palette(
-                            name: value, myColorList: jsonEncode(myColorList));
+                          name: value,
+                          myColorList: jsonEncode(myColorList),
+                          priority: priorityNum,
+                        );
 
                         Map<String, dynamic> row = p.toJson();
 
@@ -118,6 +137,14 @@ class _CustomPalettePopupState extends State<CustomPalettePopup> {
         ),
       ),
     );
+  }
+
+  //calls database and returns list of palettes
+  Future<void> getPalettes() async {
+    List<Palette> palettes = await dbHelper.getPalettes();
+    setState(() {
+      paletteList = palettes;
+    });
   }
 
   //decides which button based on order
