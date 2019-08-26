@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
-  static final _databaseName = 'dbPalette08.db';
+  static final _databaseName = 'dbPalette09.db';
   static final _databaseVersion = 1;
 
   static final table = 'my_table';
@@ -14,6 +14,7 @@ class DatabaseHelper {
   static final columnId = 'id';
   static final columnName = 'name';
   static final columnJsonPalette = 'myColorList';
+  static final columnPriority = 'priority';
 
   //singleton class
   DatabaseHelper._prvateConstructor();
@@ -43,7 +44,8 @@ class DatabaseHelper {
     await db.execute('''CREATE TABLE $table(
       $columnId INTEGER PRIMARY KEY, 
       $columnName TEXT NOT NULL,
-      $columnJsonPalette TEXT NOT NULL)
+      $columnJsonPalette TEXT NOT NULL,
+      $columnPriority INTEGER NOT NULL)
     ''');
   }
 

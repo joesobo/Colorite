@@ -1,3 +1,4 @@
+import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 enum MyThemeKeys { 
@@ -7,11 +8,11 @@ enum MyThemeKeys {
 
 class MyThemes {
   static final ThemeData lightTheme = ThemeData.light().copyWith(
-    cursorColor: Colors.grey[500]
+    cursorColor: Colors.grey[500],
   );
 
   static final ThemeData darkTheme = ThemeData.dark().copyWith(
-    cursorColor: Colors.white
+    cursorColor: Colors.white,
   );
 
   static ThemeData getThemeFromKey(MyThemeKeys themeKey){

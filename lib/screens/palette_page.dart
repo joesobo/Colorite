@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:colorite/components/color_list_card.dart';
 import 'package:colorite/components/drawer.dart';
 import 'package:colorite/components/popups/custom_palette_popup.dart';
+import 'package:colorite/components/popups/sort_palette_popup.dart';
 import 'package:colorite/database/database_helper.dart';
 import 'package:colorite/database/shared_pref.dart';
 import 'package:colorite/models/palette.dart';
@@ -20,6 +21,7 @@ class _PalettePageState extends State<PalettePage> {
   List<Palette> paletteList;
   List<Palette> filteredList = [];
   String inputText = '';
+  String sortValue = 'default';
 
   @override
   void initState() {
@@ -60,8 +62,20 @@ class _PalettePageState extends State<PalettePage> {
                   Icons.sort,
                   color: Colors.white,
                 ),
-                onPressed: () {
-                  //TODO: add sorting for list
+                onPressed: () async {
+                  final resultSort = await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return SortPalettePopup();
+                    },
+                  );
+                  getPalettes();
+
+                  if (resultSort != null) {
+                    setState(() {
+                      sortValue = resultSort;
+                    });
+                  }
                 },
               ),
             ],
@@ -97,40 +111,63 @@ class _PalettePageState extends State<PalettePage> {
                   ),
                 ),
               ),
-              children: (filteredList == null || filteredList.isEmpty)
-                  ? getPaletteList(paletteList)
-                  : getPaletteList(filteredList),
+              children: getPaletteList(paletteSort(filteredList)),
               onReorder: (int oldIndex, int newIndex) async {
+                List<Palette> tempList = paletteList
+                    .map((palette) => Palette(
+                          id: palette.id,
+                          name: palette.name,
+                          myColorList: palette.myColorList,
+                          priority: palette.priority,
+                        ))
+                    .toList();
+
                 if (newIndex > oldIndex) {
                   newIndex -= 1;
                 }
 
-                Palette oldPalette = paletteList[oldIndex];
-                Palette newPalette = paletteList[newIndex];
+                if(tempList[0].priority != -1){
+                  tempList.sort((a,b) => a.priority.compareTo(b.priority));
+                }
 
-                int temp = oldPalette.id;
-                oldPalette.id = newPalette.id;
-                newPalette.id = temp;
+                final item = tempList.removeAt(oldIndex);
+                tempList.insert(newIndex, item);
 
-                Map<String, dynamic> oldMap = oldPalette.toJson();
-                Map<String, dynamic> newMap = newPalette.toJson();
+                for (int i = 0; i < tempList.length; i++) {
+                  tempList[i].priority = i;
+                }
 
-                var item = paletteList.removeAt(oldIndex);
-                paletteList.insert(newIndex, item);
+                for (int i = 0; i < tempList.length; i++) {
+                  paletteList[i].priority = find(tempList, i + 1).priority;
+                }
 
-                await dbHelper.update(oldMap);
-                await dbHelper.update(newMap);
+                filterSearchResults("");
 
                 setState(() {
-                  getPalettes();
-                  getPaletteList(paletteList);
+                  getPaletteList(paletteSort(filteredList));
                 });
+
+                //update database with priority
+                for (int i = 0; i < paletteList.length; i++) {
+                  Map<String, dynamic> row = paletteList[i].toJson();
+                  dbHelper.update(row);
+                }
+                print('updated');
               },
             ),
           )
         ],
       ),
     );
+  }
+
+  //sorts through palette list looking for id
+  Palette find(List<Palette> pList, int index) {
+    for (int i = 0; i < pList.length; i++) {
+      if (pList[i].id == index) {
+        return pList[i];
+      }
+    }
   }
 
   //returns shared preferences accent color
@@ -152,11 +189,43 @@ class _PalettePageState extends State<PalettePage> {
           returnSearchList.add(item);
         }
       });
-    }
 
-    setState(() {
-      filteredList = returnSearchList;
-    });
+      setState(() {
+        filteredList = returnSearchList;
+      });
+    } else {
+      setState(() {
+        filteredList = paletteList;
+      });
+    }
+  }
+
+  //sorts based on popup
+  List<Palette> paletteSort(List<Palette> pList) {
+    if (pList.length == 0) {
+      return [];
+    }
+    if (sortValue == 'default') {
+      //if no handsort
+      if (pList[0].priority == -1) {
+        //default to sorting by newest
+        pList.sort((a, b) => a.id.compareTo(b.id));
+        print('default');
+      } else {
+        //otherwise sort by hand sort
+        pList.sort((a, b) => a.priority.compareTo(b.priority));
+        print('hand sort');
+      }
+    } else if (sortValue == 'nameA') {
+      pList.sort((a, b) => a.name.compareTo(b.name));
+    } else if (sortValue == 'nameZ') {
+      pList.sort((a, b) => b.name.compareTo(a.name));
+    } else if (sortValue == 'dateNew') {
+      pList.sort((a, b) => a.id.compareTo(b.id));
+    } else if (sortValue == 'dateOld') {
+      pList.sort((a, b) => b.id.compareTo(a.id));
+    }
+    return pList;
   }
 
   //returns list of palette widgets
@@ -194,9 +263,7 @@ class _PalettePageState extends State<PalettePage> {
     setState(() {
       paletteList = palettes;
     });
-    if (filteredList != null || filteredList.isNotEmpty) {
-      filterSearchResults(inputText);
-    }
+    filterSearchResults(inputText);
   }
 
   //converts dynamic list to string list

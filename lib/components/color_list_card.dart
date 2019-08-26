@@ -77,7 +77,7 @@ class ColorListCard extends StatelessWidget {
                                       },
                                     );
 
-                                    if(resultName != null){
+                                    if (resultName != null) {
                                       //convert color list to list of strings
                                       List<String> myColorList = [];
                                       for (Color color in colorList) {
@@ -89,14 +89,15 @@ class ColorListCard extends StatelessWidget {
 
                                       //create new palette
                                       Palette palette = new Palette(
-                                          name: resultName,
-                                          myColorList: jsonEncode(myColorList));
+                                        name: resultName,
+                                        myColorList: jsonEncode(myColorList),
+                                        priority: -1,
+                                      );
                                       //convert to json and insert into database
-                                      Map<String, dynamic> row = palette.toJson();
+                                      Map<String, dynamic> row =
+                                          palette.toJson();
                                       final id = await dbHelper.insert(row);
                                       print('inserted row id: $id');
-                                      print('inserted row name: ${palette.name}');
-                                      print('inserted row list: ${palette.myColorList}');
                                     }
                                   },
                                   icon: Icon(

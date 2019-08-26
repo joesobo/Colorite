@@ -36,6 +36,7 @@ class _CustomPalettePopupState extends State<CustomPalettePopup> {
         child: Container(
           height: 225,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Row(
                 children: createColorButton(colorList, context),
@@ -65,7 +66,7 @@ class _CustomPalettePopupState extends State<CustomPalettePopup> {
                   Container(
                     width: 100,
                     child: RaisedButton(
-                      color: accentColor,
+                      color: Colors.blueGrey[600],
                       elevation: 5,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
@@ -104,7 +105,7 @@ class _CustomPalettePopupState extends State<CustomPalettePopup> {
                         print('inserted row list: ${p.myColorList}');
                         Navigator.pop(context);
                       },
-                      color: Colors.blueGrey[600],
+                      color: accentColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(5.0),
                       ),
