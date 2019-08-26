@@ -35,15 +35,19 @@ class _SortPalettePopupState extends State<SortPalettePopup> {
     } else if (returnVal == 'nameA') {
       _currValue = 1;
       nameDisplayValue = 'A';
+      returnVal = 'name';
     } else if (returnVal == 'nameZ') {
       _currValue = 1;
       nameDisplayValue = 'Z';
+      returnVal = 'name';
     } else if (returnVal == 'dateNew') {
       _currValue = 2;
       dateDisplayValue = 'New';
+      returnVal = 'date';
     } else if (returnVal == 'dateOld') {
       _currValue = 2;
       dateDisplayValue = 'Old';
+      returnVal = 'date';
     }
     super.initState();
   }
