@@ -37,6 +37,7 @@ class _SettingsPageState extends State<SettingsPage> {
       body: Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: Column(
+          //crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             //main accent color
             Padding(
@@ -45,15 +46,18 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Text(
-                      'Clear Main Accent Color: ',
-                      style: TextStyle(
-                        fontSize: 18,
+                    child: Container(
+                      width: 260,
+                      child: Text(
+                        'Clear Main Accent Color: ',
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
                       ),
                     ),
                   ),
                   Container(
-                    width: 80,
+                    width: 120,
                     height: 40,
                     child: FloatingActionButton(
                       heroTag: 'Btn1',
@@ -61,7 +65,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         deleteMainColor();
                       },
                       elevation: 5,
-                      backgroundColor: accentColor,
+                      backgroundColor: Colors.red,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
                       ),
@@ -81,15 +85,18 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Text(
-                      'Clear Gradient Accent Colors: ',
-                      style: TextStyle(
-                        fontSize: 18,
+                    child: Container(
+                      width: 260,
+                      child: Text(
+                        'Clear Gradient Accent Colors: ',
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
                       ),
                     ),
                   ),
                   Container(
-                    width: 80,
+                    width: 120,
                     height: 40,
                     child: FloatingActionButton(
                       heroTag: 'Btn2',
@@ -97,7 +104,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         deleteGradientColors();
                       },
                       elevation: 5,
-                      backgroundColor: accentColor,
+                      backgroundColor: Colors.red,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
                       ),
@@ -110,51 +117,71 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
             ),
+            SizedBox(
+              height: 32,
+            ),
             //toggle dark mode
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Container(
-                  width: 80,
-                  height: 40,
-                  child: FloatingActionButton(
-                    heroTag: 'Btn3',
-                    onPressed: () {
-                      _changeTheme(context, MyThemeKeys.Dark);
-                      print('dark');
-                    },
-                    elevation: 5,
-                    backgroundColor: accentColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Text(
-                      'Dark',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12),
+              child: Text(
+                'Toggle Theme of App:',
+                style: TextStyle(
+                  fontSize: 18,
                 ),
-                Container(
-                  width: 80,
-                  height: 40,
-                  child: FloatingActionButton(
-                    heroTag: 'Btn4',
-                    onPressed: () {
-                      _changeTheme(context, MyThemeKeys.Light);
-                      print('light');
-                    },
-                    elevation: 5,
-                    backgroundColor: accentColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+            Card(
+              elevation: 5,
+              margin: EdgeInsets.symmetric(horizontal: 12),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Container(
+                      width: 120,
+                      height: 40,
+                      child: FloatingActionButton(
+                        heroTag: 'Btn3',
+                        onPressed: () {
+                          _changeTheme(context, MyThemeKeys.Dark);
+                          print('dark');
+                        },
+                        elevation: 5,
+                        backgroundColor: Color(0xff392e42),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Text(
+                          'Dark',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
                     ),
-                    child: Text(
-                      'Light',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                )
-              ],
+                    Container(
+                      width: 120,
+                      height: 40,
+                      child: FloatingActionButton(
+                        heroTag: 'Btn4',
+                        onPressed: () {
+                          _changeTheme(context, MyThemeKeys.Light);
+                          print('light');
+                        },
+                        elevation: 5,
+                        backgroundColor: Color(0xffe6d693),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Text(
+                          'Light',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
             )
           ],
         ),
