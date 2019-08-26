@@ -18,9 +18,12 @@ class PaletteInfoPopup extends StatelessWidget {
       content: Container(
         height: 120,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            Text(text),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Text(text),
+            ),
             //exit
             Container(
               width: 100,

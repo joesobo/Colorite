@@ -17,8 +17,9 @@ class ColorInfoPopup extends StatelessWidget {
       content: Padding(
         padding: const EdgeInsets.only(top: 16.0),
         child: Container(
-          height: 225,
+          height: 260,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Text('Hex: #' +
                   color.value.toRadixString(16).substring(2).toUpperCase()),

@@ -14,8 +14,9 @@ class PalettePopup extends StatelessWidget {
         textAlign: TextAlign.center,
       ),
       content: Container(
-        height: 130,
+        height: 140,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -40,7 +41,7 @@ class PalettePopup extends StatelessWidget {
               Container(
                 width: 100,
                 child: RaisedButton(
-                  color: Colors.grey,
+                  color: Colors.blueGrey[600],
                   elevation: 5,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
