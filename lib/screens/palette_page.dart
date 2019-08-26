@@ -66,7 +66,7 @@ class _PalettePageState extends State<PalettePage> {
                   final resultSort = await showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return SortPalettePopup();
+                      return SortPalettePopup(returnVal: sortValue,);
                     },
                   );
                   getPalettes();

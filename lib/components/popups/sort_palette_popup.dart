@@ -4,18 +4,49 @@ import 'package:colorite/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class SortPalettePopup extends StatefulWidget {
+  final String returnVal;
+
+  SortPalettePopup({this.returnVal});
+
   @override
-  _SortPalettePopupState createState() => _SortPalettePopupState();
+  _SortPalettePopupState createState() => _SortPalettePopupState(returnVal: returnVal);
 }
 
 class _SortPalettePopupState extends State<SortPalettePopup> {
+
+  String returnVal = '';
+
+  _SortPalettePopupState({this.returnVal});
+
   final dbHelper = DatabaseHelper.instance;
   List<Palette> paletteList;
   int _currValue = 0;
   String nameDisplayValue = 'A';
   String dateDisplayValue = 'New';
 
-  String returnVal = 'default';
+  @override
+  void initState() {
+    if(returnVal == ''){
+      returnVal = 'default';
+    } 
+
+    if(returnVal == 'default'){
+      _currValue = 0;
+    } else if (returnVal == 'nameA') {
+      _currValue = 1;
+      nameDisplayValue = 'A';
+    } else if (returnVal == 'nameZ') {
+      _currValue = 1;
+      nameDisplayValue = 'Z';
+    } else if (returnVal == 'dateNew') {
+      _currValue = 2;
+      dateDisplayValue = 'New';
+    } else if (returnVal == 'dateOld') {
+      _currValue = 2;
+      dateDisplayValue = 'Old';
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +171,7 @@ class _SortPalettePopupState extends State<SortPalettePopup> {
                     Map<String, dynamic> row = paletteList[i].toJson();
                     dbHelper.update(row);
                   }
-                  Navigator.pop(context);
+                  Navigator.pop(context, 'default');
                 },
               ),
             ),
