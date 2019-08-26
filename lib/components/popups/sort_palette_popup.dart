@@ -15,7 +15,7 @@ class _SortPalettePopupState extends State<SortPalettePopup> {
   String nameDisplayValue = 'A';
   String dateDisplayValue = 'New';
 
-  String returnVal = 'dafault';
+  String returnVal = 'default';
 
   @override
   Widget build(BuildContext context) {

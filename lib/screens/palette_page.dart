@@ -209,8 +209,7 @@ class _PalettePageState extends State<PalettePage> {
       //if no handsort
       if (pList[0].priority == -1) {
         //default to sorting by newest
-        pList.sort((a, b) => a.id.compareTo(b.id));
-        print('default');
+        pList.sort((a, b) => b.id.compareTo(a.id));
       } else {
         //otherwise sort by hand sort
         pList.sort((a, b) => a.priority.compareTo(b.priority));
@@ -221,10 +220,11 @@ class _PalettePageState extends State<PalettePage> {
     } else if (sortValue == 'nameZ') {
       pList.sort((a, b) => b.name.compareTo(a.name));
     } else if (sortValue == 'dateNew') {
-      pList.sort((a, b) => a.id.compareTo(b.id));
-    } else if (sortValue == 'dateOld') {
       pList.sort((a, b) => b.id.compareTo(a.id));
+    } else if (sortValue == 'dateOld') {
+      pList.sort((a, b) => a.id.compareTo(b.id));
     }
+    print(sortValue);
     return pList;
   }
 
