@@ -140,7 +140,7 @@ class _PalettePageState extends State<PalettePage> {
                 }
 
                 for (int i = 0; i < tempList.length; i++) {
-                  paletteList[i].priority = find(tempList, i + 1).priority;
+                  paletteList[i].priority = find(tempList, paletteList[i].id).priority;
                 }
 
                 filterSearchResults("");

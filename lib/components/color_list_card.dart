@@ -33,6 +33,7 @@ class ColorListCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 //top row
+                //home page
                 toolTip != null
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -110,6 +111,7 @@ class ColorListCard extends StatelessWidget {
                           )
                         ],
                       )
+                    //palette page
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[

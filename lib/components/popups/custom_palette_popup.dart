@@ -23,11 +23,11 @@ class _CustomPalettePopupState extends State<CustomPalettePopup> {
   ColorHelper colorHelper = new ColorHelper();
   final dbHelper = DatabaseHelper.instance;
   List<Palette> paletteList;
+  String value;
 
   @override
   Widget build(BuildContext context) {
     final dbHelper = DatabaseHelper.instance;
-    String value;
 
     return AlertDialog(
       shape: RoundedRectangleBorder(
@@ -51,7 +51,9 @@ class _CustomPalettePopupState extends State<CustomPalettePopup> {
               TextField(
                 textCapitalization: TextCapitalization.sentences,
                 onChanged: (text) {
-                  value = text;
+                  setState(() {
+                    value = text;
+                  });
                 },
                 decoration: new InputDecoration(
                   labelText: "Enter Name",
@@ -94,34 +96,34 @@ class _CustomPalettePopupState extends State<CustomPalettePopup> {
                           myColorList.add(colorHelper.toHex(color));
                         }
 
-                        await getPalettes();
+                        if (value != null) {
+                          await getPalettes();
 
-                        int priorityNum;
-                        if(paletteList[0].priority == -1){
-                          priorityNum = -1;
-                        }else{
-                          priorityNum = 0;
-
-                          for(int i = 0; i < paletteList.length; i++){
-                            paletteList[i].priority++;
-                            dbHelper.update(paletteList[i].toJson());
+                          int priorityNum = 0;
+                          if (paletteList[0].priority == -1) {
+                            priorityNum = -1;
+                          } else {
+                            for (int i = 0; i < paletteList.length; i++) {
+                              paletteList[i].priority++;
+                              dbHelper.update(paletteList[i].toJson());
+                            }
                           }
+
+                          //create new palette
+                          Palette p = new Palette(
+                            name: value,
+                            myColorList: jsonEncode(myColorList),
+                            priority: priorityNum,
+                          );
+
+                          Map<String, dynamic> row = p.toJson();
+
+                          //insert new row to database
+                          final id = await dbHelper.insert(row);
+                          print('inserted row id: $id');
+                          print('inserted row name: ${p.name}');
+                          print('inserted row list: ${p.myColorList}');
                         }
-
-                        //create new palette
-                        Palette p = new Palette(
-                          name: value,
-                          myColorList: jsonEncode(myColorList),
-                          priority: priorityNum,
-                        );
-
-                        Map<String, dynamic> row = p.toJson();
-
-                        //insert new row to database
-                        final id = await dbHelper.insert(row);
-                        print('inserted row id: $id');
-                        print('inserted row name: ${p.name}');
-                        print('inserted row list: ${p.myColorList}');
                         Navigator.pop(context);
                       },
                       color: accentColor,
