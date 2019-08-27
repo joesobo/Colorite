@@ -100,7 +100,9 @@ class _CustomPalettePopupState extends State<CustomPalettePopup> {
                           await getPalettes();
 
                           int priorityNum = 0;
-                          if (paletteList[0].priority == -1) {
+                          if (paletteList.length == 0) {
+                            priorityNum = -1;
+                          } else if (paletteList[0].priority == -1) {
                             priorityNum = -1;
                           } else {
                             for (int i = 0; i < paletteList.length; i++) {
