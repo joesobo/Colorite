@@ -48,7 +48,7 @@ class _GradientPageState extends State<GradientPage> {
       ),
       drawer: SideDrawer(),
       body: (color1 != null || color2 != null) ?
-      Column(
+      ListView(
         children: <Widget>[
           //color display
           Container(
