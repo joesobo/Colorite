@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
-
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -30,79 +29,82 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Colorite'),
+        title: Text(
+          'Palytte',
+          //style: TextStyle(fontFamily: 'Lexend'),
+        ),
         backgroundColor: mainColor,
         iconTheme: new IconThemeData(color: Colors.white),
       ),
       drawer: SideDrawer(),
-      body: mainColor != null ?
-      ListView(
-        children: <Widget>[
-          //color viewer
-          Container(
-            margin: EdgeInsets.fromLTRB(30, 32, 30, 4),
-            height: 104,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(
-                Radius.circular(5),
-              ),
-              color: mainColor,
-            ),
-          ),
+      body: mainColor != null
+          ? ListView(
+              children: <Widget>[
+                //color viewer
+                Container(
+                  margin: EdgeInsets.fromLTRB(30, 32, 30, 4),
+                  height: 104,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                    color: mainColor,
+                  ),
+                ),
 
-          //new color info
-          ColorInfoCard(text: 'Hex: ', color: mainColor, parent: this),
+                //new color info
+                ColorInfoCard(text: 'Hex: ', color: mainColor, parent: this),
 
-          SizedBox(
-            height: 8,
-          ),
+                SizedBox(
+                  height: 8,
+                ),
 
-          //list of color cards
-          ColorListCard(
-            text: 'Shade colors',
-            colorList: ColorHelper().getShades(mainColor),
-            toolTip:
-                'A group of colors that have the same hue but different value',
-          ),
-          ColorListCard(
-            text: 'Tint colors',
-            colorList: ColorHelper().getTint(mainColor),
-            toolTip:
-                'A group of colors that have the same hue but different saturation',
-          ),
-          ColorListCard(
-            text: 'Triadic colors',
-            colorList: ColorHelper().getTriadic(mainColor),
-            toolTip:
-                'A group of colors that are evenly spaced around the color wheel',
-          ),
-          ColorListCard(
-            text: 'Analogous colors',
-            colorList: ColorHelper().getAnalogous(mainColor),
-            toolTip:
-                'A group of colors that are next to each other on the color wheel',
-          ),
-          ColorListCard(
-            text: 'Complimentary colors',
-            colorList: ColorHelper().getComplementary(mainColor),
-            toolTip:
-                'A group of colors that are opposite each other on the color wheel',
-          ),
-          ColorListCard(
-            text: 'Split Complimentary colors',
-            colorList: ColorHelper().getSplitComplement(mainColor),
-            toolTip:
-                'A group of colors that are split 3 ways around the color wheel',
-          ),
-          ColorListCard(
-            text: 'Monochromatic colors',
-            colorList: ColorHelper().getMonochromatic(mainColor),
-            toolTip:
-                'A group of colors that have the same hue but different value and saturation',
-          ),
-        ],
-      )
-      : Container(),
+                //list of color cards
+                ColorListCard(
+                  text: 'Shade colors',
+                  colorList: ColorHelper().getShades(mainColor),
+                  toolTip:
+                      'A group of colors that have the same hue but different value',
+                ),
+                ColorListCard(
+                  text: 'Tint colors',
+                  colorList: ColorHelper().getTint(mainColor),
+                  toolTip:
+                      'A group of colors that have the same hue but different saturation',
+                ),
+                ColorListCard(
+                  text: 'Triadic colors',
+                  colorList: ColorHelper().getTriadic(mainColor),
+                  toolTip:
+                      'A group of colors that are evenly spaced around the color wheel',
+                ),
+                ColorListCard(
+                  text: 'Analogous colors',
+                  colorList: ColorHelper().getAnalogous(mainColor),
+                  toolTip:
+                      'A group of colors that are next to each other on the color wheel',
+                ),
+                ColorListCard(
+                  text: 'Complimentary colors',
+                  colorList: ColorHelper().getComplementary(mainColor),
+                  toolTip:
+                      'A group of colors that are opposite each other on the color wheel',
+                ),
+                ColorListCard(
+                  text: 'Split Complimentary colors',
+                  colorList: ColorHelper().getSplitComplement(mainColor),
+                  toolTip:
+                      'A group of colors that are split 3 ways around the color wheel',
+                ),
+                ColorListCard(
+                  text: 'Monochromatic colors',
+                  colorList: ColorHelper().getMonochromatic(mainColor),
+                  toolTip:
+                      'A group of colors that have the same hue but different value and saturation',
+                ),
+              ],
+            )
+          : Container(),
     );
   }
 
@@ -147,9 +149,7 @@ class ColorInfoCard extends StatelessWidget {
                       text,
                     ),
                   ),
-                  SpecialText(
-                      text: '#' +
-                          colorHelper.toHex(color)),
+                  SpecialText(text: '#' + colorHelper.toHex(color)),
                 ],
               ),
             ),
@@ -179,7 +179,10 @@ class ColorInfoCard extends StatelessWidget {
                   bottom: 4,
                   //color editing button
                   child: IconButton(
-                    icon: Icon(Icons.edit, color: Colors.white,),
+                    icon: Icon(
+                      Icons.edit,
+                      color: Colors.white,
+                    ),
                     onPressed: () async {
                       final resultColor = await showDialog(
                         context: context,
