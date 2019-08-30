@@ -1,6 +1,6 @@
-import 'package:colorite/database/database_helper.dart';
-import 'package:colorite/models/palette.dart';
-import 'package:colorite/utilities/constants.dart';
+import 'package:palytte/database/database_helper.dart';
+import 'package:palytte/models/palette.dart';
+import 'package:palytte/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class SortPalettePopup extends StatefulWidget {

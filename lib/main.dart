@@ -1,6 +1,6 @@
-import 'package:colorite/components/theme/custom_theme.dart';
-import 'package:colorite/screens/home_page.dart';
-import 'package:colorite/utilities/my_themes.dart';
+import 'package:palytte/components/theme/custom_theme.dart';
+import 'package:palytte/screens/home_page.dart';
+import 'package:palytte/utilities/my_themes.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(

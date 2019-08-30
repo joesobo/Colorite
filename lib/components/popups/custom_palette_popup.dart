@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:colorite/components/popups/color_selector_popup.dart';
-import 'package:colorite/database/database_helper.dart';
-import 'package:colorite/models/palette.dart';
-import 'package:colorite/utilities/color_helper.dart';
-import 'package:colorite/utilities/constants.dart';
+import 'package:palytte/components/popups/color_selector_popup.dart';
+import 'package:palytte/database/database_helper.dart';
+import 'package:palytte/models/palette.dart';
+import 'package:palytte/utilities/color_helper.dart';
+import 'package:palytte/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class CustomPalettePopup extends StatefulWidget {

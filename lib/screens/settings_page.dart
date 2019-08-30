@@ -1,8 +1,8 @@
-import 'package:colorite/components/drawer.dart';
-import 'package:colorite/components/theme/custom_theme.dart';
-import 'package:colorite/database/shared_pref.dart';
-import 'package:colorite/utilities/constants.dart';
-import 'package:colorite/utilities/my_themes.dart';
+import 'package:palytte/components/drawer.dart';
+import 'package:palytte/components/theme/custom_theme.dart';
+import 'package:palytte/database/shared_pref.dart';
+import 'package:palytte/utilities/constants.dart';
+import 'package:palytte/utilities/my_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

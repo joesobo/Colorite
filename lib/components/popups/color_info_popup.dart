@@ -1,6 +1,6 @@
-import 'package:colorite/components/color_indicator.dart';
-import 'package:colorite/components/special_text.dart';
-import 'package:colorite/utilities/constants.dart';
+import 'package:palytte/components/color_indicator.dart';
+import 'package:palytte/components/special_text.dart';
+import 'package:palytte/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class ColorInfoPopup extends StatelessWidget {

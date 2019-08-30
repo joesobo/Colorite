@@ -1,4 +1,4 @@
-import 'package:colorite/utilities/color_helper.dart';
+import 'package:palytte/utilities/color_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

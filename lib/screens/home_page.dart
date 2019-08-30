@@ -1,10 +1,10 @@
-import 'package:colorite/components/color_list_card.dart';
-import 'package:colorite/components/drawer.dart';
-import 'package:colorite/components/popups/color_selector_popup.dart';
-import 'package:colorite/components/special_text.dart';
-import 'package:colorite/database/shared_pref.dart';
-import 'package:colorite/utilities/color_helper.dart';
-import 'package:colorite/utilities/constants.dart';
+import 'package:palytte/components/color_list_card.dart';
+import 'package:palytte/components/drawer.dart';
+import 'package:palytte/components/popups/color_selector_popup.dart';
+import 'package:palytte/components/special_text.dart';
+import 'package:palytte/database/shared_pref.dart';
+import 'package:palytte/utilities/color_helper.dart';
+import 'package:palytte/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

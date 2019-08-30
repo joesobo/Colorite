@@ -1,4 +1,4 @@
-import 'package:colorite/utilities/my_themes.dart';
+import 'package:palytte/utilities/my_themes.dart';
 import 'package:flutter/material.dart';
 
 class _CustomTheme extends InheritedWidget {

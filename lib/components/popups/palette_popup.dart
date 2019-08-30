@@ -1,4 +1,4 @@
-import 'package:colorite/utilities/constants.dart';
+import 'package:palytte/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class PalettePopup extends StatelessWidget {

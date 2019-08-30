@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:colorite/components/color_list_card.dart';
-import 'package:colorite/components/drawer.dart';
-import 'package:colorite/components/popups/custom_palette_popup.dart';
-import 'package:colorite/components/popups/sort_palette_popup.dart';
-import 'package:colorite/database/database_helper.dart';
-import 'package:colorite/database/shared_pref.dart';
-import 'package:colorite/models/palette.dart';
-import 'package:colorite/utilities/constants.dart';
+import 'package:palytte/components/color_list_card.dart';
+import 'package:palytte/components/drawer.dart';
+import 'package:palytte/components/popups/custom_palette_popup.dart';
+import 'package:palytte/components/popups/sort_palette_popup.dart';
+import 'package:palytte/database/database_helper.dart';
+import 'package:palytte/database/shared_pref.dart';
+import 'package:palytte/models/palette.dart';
+import 'package:palytte/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class PalettePage extends StatefulWidget {

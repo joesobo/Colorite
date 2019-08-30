@@ -1,5 +1,5 @@
-import 'package:colorite/components/color_indicator.dart';
-import 'package:colorite/utilities/constants.dart';
+import 'package:palytte/components/color_indicator.dart';
+import 'package:palytte/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

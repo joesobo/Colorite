@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:colorite/models/palette.dart';
+import 'package:palytte/models/palette.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';

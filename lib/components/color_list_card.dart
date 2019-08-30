@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:colorite/components/popups/color_info_popup.dart';
-import 'package:colorite/components/popups/palette_info_popup.dart';
-import 'package:colorite/components/popups/palette_popup.dart';
-import 'package:colorite/database/database_helper.dart';
-import 'package:colorite/models/palette.dart';
+import 'package:palytte/components/popups/color_info_popup.dart';
+import 'package:palytte/components/popups/palette_info_popup.dart';
+import 'package:palytte/components/popups/palette_popup.dart';
+import 'package:palytte/database/database_helper.dart';
+import 'package:palytte/models/palette.dart';
 import 'package:flutter/material.dart';
 
 class ColorListCard extends StatelessWidget {
